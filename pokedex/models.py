@@ -1,0 +1,32 @@
+from django.db import models
+from django.core.exceptions import ValidationError
+from colorfield.fields import ColorField
+
+class Type(models.Model):
+	name = models.CharField(max_length=15, primary_key=True)
+	color = ColorField()
+	weak_to = models.ManyToManyField('self')
+	resistant_to = models.ManyToManyField('self')
+
+	def __str__(self):
+		return self.name
+
+class Pokemon(models.Model):
+	pokedex_id = models.IntegerField(primary_key=True)
+	name = models.CharField(max_length=100)
+	description = models.TextField()
+	image = models.FilePathField(path="/img")
+	poke_type = models.ManyToManyField('Type')
+
+	def __str__(self):
+		return self.name
+
+	def is_weak_to_types(self):
+		types_weak = set()
+		types_resistant = set()
+		for t in self.poke_type.all():
+			types_weak.update(t.weak_to.all()) 
+			types_resistant.update(t.resistant_to.all()) 
+		# we want the types in weak but not resistant
+		return types_weak.difference(types_resistant) 
+
