@@ -1,6 +1,10 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from colorfield.fields import ColorField
+from pathlib import Path
+import os
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 class Type(models.Model):
 	name = models.CharField(max_length=15, primary_key=True)
@@ -15,7 +19,7 @@ class Pokemon(models.Model):
 	pokedex_id = models.IntegerField(primary_key=True)
 	name = models.CharField(max_length=100)
 	description = models.TextField()
-	image = models.FilePathField(path="/img")
+	image = models.FilePathField()
 	poke_type = models.ManyToManyField('Type')
 
 	def __str__(self):
@@ -29,4 +33,7 @@ class Pokemon(models.Model):
 			types_resistant.update(t.resistant_to.all()) 
 		# we want the types in weak but not resistant
 		return types_weak.difference(types_resistant) 
+
+	class Meta:
+		verbose_name_plural = 'Pokemon'
 
