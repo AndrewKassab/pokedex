@@ -1,0 +1,32 @@
+[
+	{
+		"model": "pokedex.Pokemon",
+		"fields": {
+			"pokedex_id": "1",
+			"name": "Bulbasaur",
+			"description": "its back right from the day this Pokémon is born. The seed slowly grows larger.",
+			"image": "bulbasaur.png",
+			"poke_type": ["Grass"]
+		}
+	},
+	{
+		"model": "pokedex.Pokemon",
+		"fields": {
+			"pokedex_id": "4",
+			"name": "Charmander",
+			"description": "It has a preference for hot things. When it rains, steam is said to spout from the tip of its tail.",
+			"image": "charmander.png",
+			"poke_type": ["Fire"]
+		}
+	},
+	{
+		"model": "pokedex.Pokemon",
+		"fields": {
+			"pokedex_id": "7",
+			"name": "Squirtle",
+			"description": "When it retracts its long neck into its shell, it squirts out water with vigorous force.",
+			"image": "squirtle.png",
+			"poke_type": ["Water"]
+		}
+	}
+]

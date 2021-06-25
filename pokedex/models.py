@@ -4,7 +4,8 @@ from colorfield.fields import ColorField
 from pathlib import Path
 import os
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+STATIC_PATH = os.path.join(Path(__file__).resolve().parent, 'static')
+IMG_PATH = os.path.join(STATIC_PATH, 'img')
 
 class Type(models.Model):
 	name = models.CharField(max_length=15, primary_key=True)
@@ -19,7 +20,7 @@ class Pokemon(models.Model):
 	pokedex_id = models.IntegerField(primary_key=True)
 	name = models.CharField(max_length=100)
 	description = models.TextField()
-	image = models.FilePathField()
+	image = models.FilePathField(path=IMG_PATH)
 	poke_type = models.ManyToManyField('Type')
 
 	def __str__(self):

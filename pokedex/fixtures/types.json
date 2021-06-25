@@ -1,0 +1,26 @@
+[
+	{
+		"model": "pokedex.Type",
+		"fields": {
+			"name": "Water",
+			"color": "#0000FF",
+			"weak_to": ["Grass"]
+		}
+	},
+	{
+		"model": "pokedex.Type",
+		"fields": {
+			"name": "Fire",
+			"color": "#0000FF",
+			"weak_to": ["Water"]
+		}
+	},
+	{
+		"model": "pokedex.Type",
+		"fields": {
+			"name": "Grass",
+			"color": "#0000FF",
+			"weak_to": ["Fire"]
+		}
+	}
+]
