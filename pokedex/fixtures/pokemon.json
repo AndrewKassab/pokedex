@@ -22,6 +22,16 @@
 	{
 		"model": "pokedex.Pokemon",
 		"fields": {
+			"pokedex_id": "6",
+			"name": "Charizard",
+			"description": "It spits fire that is hot enough to melt boulders. It may cause forest fires by blowing flames.",
+			"image": "charizard.png",
+			"poke_type": ["Fire", "Flying"]
+		}
+	},
+	{
+		"model": "pokedex.Pokemon",
+		"fields": {
 			"pokedex_id": "7",
 			"name": "Squirtle",
 			"description": "When it retracts its long neck into its shell, it squirts out water with vigorous force.",

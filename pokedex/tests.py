@@ -6,17 +6,21 @@ class PokemonModelTests(TestCase):
 
 	fixtures = ['types.json', 'pokemon.json']
 
-	# TODO: Improve once you have all types seeded
 	def test_is_weak_to_single_type(self):
 		squirtle = Pokemon.objects.get(pk=7)
-		grass = Type.objects.get(pk="Grass")
-		expected_weak_to = [grass]
+		expected_weak_to = list(Type.objects.get(pk='Water').weak_to.all())
 		returned_weak_to = list(squirtle.is_weak_to_types())
-		self.assertEqual(returned_weak_to, expected_weak_to)
+		self.assertCountEqual(returned_weak_to, expected_weak_to)
 
 
 	def test_is_weak_to_double_type(self):
-		pass 
+		charizard = Pokemon.objects.get(pk=6)
+		water = Type.objects.get(pk='Water')
+		electric = Type.objects.get(pk='Electric')
+		rock = Type.objects.get(pk='Rock')
+		expected_weak_to = [water, electric, rock]
+		returned_weak_to = list(charizard.is_weak_to_types())
+		self.assertCountEqual(returned_weak_to, expected_weak_to)
 
 	# Tests when a pokemon is both resistant and weak to a type, then it shouldn't be weak to
 	def test_is_weak_to_cancels_out(self):

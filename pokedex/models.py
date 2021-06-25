@@ -30,11 +30,13 @@ class Pokemon(models.Model):
 	def is_weak_to_types(self):
 		types_weak = set()
 		types_resistant = set()
+		types_immune = set()
 		for t in self.poke_type.all():
 			types_weak.update(t.weak_to.all()) 
 			types_resistant.update(t.resistant_to.all()) 
+			types_immune.update(t.immune_to.all())
 		# we want the types in weak but not resistant
-		return types_weak.difference(types_resistant) 
+		return (types_weak.difference(types_resistant)).difference(types_immune)
 
 	class Meta:
 		verbose_name_plural = 'Pokemon'
