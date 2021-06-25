@@ -12,6 +12,7 @@ class Type(models.Model):
 	color = ColorField()
 	weak_to = models.ManyToManyField('self', blank=True, symmetrical=False)
 	resistant_to = models.ManyToManyField('self', related_name='resistant', blank=True, symmetrical=False)
+	immune_to = models.ManyToManyField('self', related_name='immune', blank=True, symmetrical=False)
 
 	def __str__(self):
 		return self.name
