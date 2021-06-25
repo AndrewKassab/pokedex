@@ -38,5 +38,15 @@
 			"image": "squirtle.png",
 			"poke_type": ["Water"]
 		}
+	},
+	{
+		"model": "pokedex.Pokemon",
+		"fields": {
+			"pokedex_id": "18",
+			"name": "Pidgeot",
+			"description": "This Pokémon flies at Mach 2 speed, seeking prey. Its large talons are feared as wicked weapons.",
+			"image": "pidgeot.png",
+			"poke_type": ["Normal", "Flying"]
+		}
 	}
 ]

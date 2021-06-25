@@ -24,4 +24,7 @@ class PokemonModelTests(TestCase):
 
 	# Tests when a pokemon is both resistant and weak to a type, then it shouldn't be weak to
 	def test_is_weak_to_cancels_out(self):
-		pass
+		pidgeot = Pokemon.objects.get(pk=18)
+		fighting = Type.objects.get(pk='Fighting')
+		returned_weak_to = list(pidgeot.is_weak_to_types())
+		self.assertNotIn(fighting, returned_weak_to)
