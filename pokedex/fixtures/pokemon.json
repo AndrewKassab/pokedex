@@ -5,7 +5,7 @@
 			"pokedex_id": "1",
 			"name": "Bulbasaur",
 			"description": "its back right from the day this Pokémon is born. The seed slowly grows larger.",
-			"image": "bulbasaur.png",
+			"image": "img/bulbasaur.png",
 			"poke_type": ["Grass"]
 		}
 	},
@@ -15,7 +15,7 @@
 			"pokedex_id": "4",
 			"name": "Charmander",
 			"description": "It has a preference for hot things. When it rains, steam is said to spout from the tip of its tail.",
-			"image": "charmander.png",
+			"image": "img/charmander.png",
 			"poke_type": ["Fire"]
 		}
 	},
@@ -25,7 +25,7 @@
 			"pokedex_id": "6",
 			"name": "Charizard",
 			"description": "It spits fire that is hot enough to melt boulders. It may cause forest fires by blowing flames.",
-			"image": "charizard.png",
+			"image": "img/charizard.png",
 			"poke_type": ["Fire", "Flying"]
 		}
 	},
@@ -35,7 +35,7 @@
 			"pokedex_id": "7",
 			"name": "Squirtle",
 			"description": "When it retracts its long neck into its shell, it squirts out water with vigorous force.",
-			"image": "squirtle.png",
+			"image": "img/squirtle.png",
 			"poke_type": ["Water"]
 		}
 	},
@@ -45,7 +45,7 @@
 			"pokedex_id": "18",
 			"name": "Pidgeot",
 			"description": "This Pokémon flies at Mach 2 speed, seeking prey. Its large talons are feared as wicked weapons.",
-			"image": "pidgeot.png",
+			"image": "img/pidgeot.png",
 			"poke_type": ["Normal", "Flying"]
 		}
 	}

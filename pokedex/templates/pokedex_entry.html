@@ -1,5 +1,11 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block page_content %}
-<h1>Hello World, Pokedex ENTRY</h1>
+<h1 style="text-align: center;">{{pokemon.name}}</h1>
+<div id="img_area">
+	<img src="{% static pokemon.image %}">
+</div>
+<div id="details">
+
+</div>
 {% endblock %}
