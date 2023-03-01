@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -20,7 +21,7 @@ import java.util.Set;
 public class Pokemon {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
     private Integer id;
 
     @NotNull
@@ -30,13 +31,13 @@ public class Pokemon {
     private String name;
 
     @ManyToMany
-    private Set<Move> moves;
+    private Set<Move> moves = new HashSet<>();
 
     @NotNull
     private Type type;
 
-    @NotNull
     private LocalDateTime createdDate;
+
     private LocalDateTime updatedDate;
 
 }
