@@ -1,5 +1,7 @@
 package andrewkassab.pokedex.repositories;
 
+import andrewkassab.pokedex.PokedexTest;
+import andrewkassab.pokedex.entitites.Move;
 import andrewkassab.pokedex.entitites.Pokemon;
 import andrewkassab.pokedex.models.Type;
 import jakarta.validation.ConstraintViolationException;
@@ -7,14 +9,22 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class PokemonRepositoryTest {
+class PokemonRepositoryTest extends PokedexTest {
 
     @Autowired
     PokemonRepository pokemonRepository;
+
+    List<Pokemon> pokemonList = getThreeStarterPokemon();
+
+    List<Move> moveList = getFiveMoves();
 
     @Test
     void testSavePokemon() {
@@ -47,6 +57,16 @@ class PokemonRepositoryTest {
                     .id(1)
                     .name("Bulbasaur")
                     .build());
+            pokemonRepository.flush();
+        });
+    }
+
+    @Test
+    void testSavePokemonTooManyMoves() {
+        var pokemonToSave = pokemonList.get(0);
+        pokemonToSave.setMoves(new HashSet<>(moveList));
+        assertThrows(ConstraintViolationException.class, () -> {
+            Pokemon savedPokemon = pokemonRepository.save(pokemonToSave);
             pokemonRepository.flush();
         });
     }

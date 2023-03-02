@@ -1,9 +1,11 @@
 package andrewkassab.pokedex;
 
+import andrewkassab.pokedex.entitites.Move;
 import andrewkassab.pokedex.entitites.Pokemon;
 import andrewkassab.pokedex.models.Type;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class PokedexTest {
@@ -34,6 +36,37 @@ public abstract class PokedexTest {
         pokemonList.add(squirtle);
 
         return pokemonList;
+    }
+
+    protected List<Move> getFiveMoves() {
+        Move moveOne = Move.builder()
+                .name("Flamethrower")
+                .type(Type.FIRE)
+                .build();
+
+        Move moveTwo = Move.builder()
+                .name("Razor Leaf")
+                .type(Type.GRASS)
+                .build();
+
+        Move moveThree = Move.builder()
+                .name("Water Gun")
+                .type(Type.WATER)
+                .build();
+
+        Move moveFour = Move.builder()
+                .name("Hydro Pump")
+                .type(Type.WATER)
+                .build();
+
+        Move moveFive = Move.builder()
+                .name("Ember")
+                .type(Type.FIRE)
+                .build();
+
+        Move[] moves = new Move[] {moveOne, moveTwo, moveThree, moveFour, moveFive};
+
+        return Arrays.asList(moves);
     }
 
 }

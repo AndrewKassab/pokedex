@@ -30,6 +30,7 @@ public class Pokemon {
     @Column(length=50)
     private String name;
 
+    @Size(max=4)
     @ManyToMany
     private Set<Move> moves = new HashSet<>();
 
