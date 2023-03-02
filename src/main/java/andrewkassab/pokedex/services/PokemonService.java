@@ -1,6 +1,7 @@
 package andrewkassab.pokedex.services;
 
 import andrewkassab.pokedex.entitites.Pokemon;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;

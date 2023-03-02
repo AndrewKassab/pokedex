@@ -13,32 +13,32 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class PokemonController {
 
-    public static final String MOVE_PATH = "/api/move";
-    public static final String MOVE_PATH_ID = MOVE_PATH + "/{moveId}";
+    public static final String POKEMON_PATH = "/api/pokemon";
+    public static final String POKEMON_PATH_ID = POKEMON_PATH + "/{pokemonId}";
 
     private final PokemonService pokemonService;
 
-    @PutMapping(MOVE_PATH_ID)
+    @PutMapping(POKEMON_PATH_ID)
     public ResponseEntity updatePokemonById(@PathVariable("moveId") Integer moveId, @RequestBody Pokemon move) {
         return null;
     }
 
-    @DeleteMapping(MOVE_PATH_ID)
+    @DeleteMapping(POKEMON_PATH_ID)
     public ResponseEntity deletePokemonById(@PathVariable("moveId") Integer moveId) {
         return null;
     }
 
-    @PostMapping(MOVE_PATH)
+    @PostMapping(POKEMON_PATH)
     public ResponseEntity createPokemon(@Validated @RequestBody Pokemon move) {
         return null;
     }
 
-    @GetMapping(MOVE_PATH)
+    @GetMapping(POKEMON_PATH)
     public ResponseEntity getAllPokemons() {
         return null;
     }
 
-    @GetMapping(MOVE_PATH_ID)
+    @GetMapping(POKEMON_PATH_ID)
     public ResponseEntity getPokemonById(@PathVariable("moveId") Integer moveId) {
         return null;
     }
