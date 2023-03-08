@@ -1,8 +1,8 @@
 package andrewkassab.pokedex.controller;
 
 import andrewkassab.pokedex.PokedexTest;
-import andrewkassab.pokedex.entitites.Pokemon;
-import andrewkassab.pokedex.services.PokemonService;
+import andrewkassab.pokedex.entitites.Move;
+import andrewkassab.pokedex.services.MoveService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -24,115 +24,114 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(PokemonController.class)
+@WebMvcTest(MoveController.class)
 class MoveControllerTest extends PokedexTest {
 
     @Autowired
     MockMvc mockMvc;
 
     @MockBean
-    PokemonService pokemonService;
+    MoveService moveService;
 
     @Captor
     ArgumentCaptor<Integer> idArgumentCaptor;
 
     @Captor
-    ArgumentCaptor<Pokemon> pokemonArgumentCaptor;
+    ArgumentCaptor<Move> moveArgumentCaptor;
 
-    List<Pokemon> pokemonList = getThreeStarterPokemon();
-
-    @Autowired
     ObjectMapper objectMapper;
 
-    @Test
-    void testDeletePokemon() throws Exception {
-        var testPokemon = pokemonList.get(0);
-        given(pokemonService.deletePokemonById(any())).willReturn(true);
+    List<Move> moveList = getFiveMoves();
 
-        mockMvc.perform(delete(PokemonController.POKEMON_PATH_ID, testPokemon.getId())
+    @Test
+    void testDeleteMove() throws Exception {
+        var testMove = moveList.get(0);
+        given(moveService.deleteMoveById(any())).willReturn(true);
+
+        mockMvc.perform(delete(MoveController.MOVE_PATH_ID, testMove.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        verify(pokemonService).deletePokemonById(idArgumentCaptor.capture());
+        verify(moveService).deleteMoveById(idArgumentCaptor.capture());
 
-        assertThat(testPokemon.getId()).isEqualTo(idArgumentCaptor.getValue());
+        assertThat(testMove.getId()).isEqualTo(idArgumentCaptor.getValue());
     }
 
     @Test
-    void testUpdatePokemon() throws Exception {
-        var testPokemon = pokemonList.get(0);
-        testPokemon.setName("New Name");
-        given(pokemonService.updatePokemonById(any(), any())).willReturn(Optional.of(testPokemon));
+    void testUpdateMove() throws Exception {
+        var testMove = moveList.get(0);
+        testMove.setName("New Name");
+        given(moveService.updateMoveById(any(), any())).willReturn(Optional.of(testMove));
 
-        mockMvc.perform(put(PokemonController.POKEMON_PATH_ID, testPokemon.getId())
+        mockMvc.perform(put(MoveController.MOVE_PATH_ID, testMove.getId())
                 .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(testPokemon)))
+                        .content(objectMapper.writeValueAsString(testMove)))
                 .andExpect(status().isNoContent());
 
-        verify(pokemonService).updatePokemonById(idArgumentCaptor.capture(), pokemonArgumentCaptor.capture());
+        verify(moveService).updateMoveById(idArgumentCaptor.capture(), moveArgumentCaptor.capture());
 
-        assertThat(testPokemon.getId()).isEqualTo(idArgumentCaptor.getValue());
-        assertThat(testPokemon.getName()).isEqualTo(pokemonArgumentCaptor.getValue().getName());
+        assertThat(testMove.getId()).isEqualTo(idArgumentCaptor.getValue());
+        assertThat(testMove.getName()).isEqualTo(moveArgumentCaptor.getValue().getName());
     }
 
     @Test
-    void testCreatePokemon() throws Exception {
-        var testPokemon = pokemonList.get(0);
-        given(pokemonService.saveNewPokemon(any(Pokemon.class))).willReturn(pokemonList.get(0));
+    void testCreateMove() throws Exception {
+        var testMove = moveList.get(0);
+        given(moveService.saveNewMove(any(Move.class))).willReturn(moveList.get(0));
 
-        mockMvc.perform(post(PokemonController.POKEMON_PATH)
+        mockMvc.perform(post(MoveController.MOVE_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(testPokemon)))
+                    .content(objectMapper.writeValueAsString(testMove)))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"))
-                .andExpect(jsonPath("$.name", is(testPokemon.getName())));
+                .andExpect(jsonPath("$.name", is(testMove.getName())));
     }
 
     @Test
-    void testCreatePokemonNullName() throws Exception {
-        var testPokemon = pokemonList.get(0);
-        testPokemon.setName(null);
-        testPokemon.setId(2);
-        given(pokemonService.saveNewPokemon(any(Pokemon.class))).willReturn(pokemonList.get(0));
+    void testCreateMoveNullName() throws Exception {
+        var testMove = moveList.get(0);
+        testMove.setName(null);
+        testMove.setId(2);
+        given(moveService.saveNewMove(any(Move.class))).willReturn(moveList.get(0));
 
-        mockMvc.perform(post(PokemonController.POKEMON_PATH)
+        mockMvc.perform(post(MoveController.MOVE_PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .contentType(objectMapper.writeValueAsString(testPokemon)))
+                        .contentType(objectMapper.writeValueAsString(testMove)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
-    void testGetAllPokemon() throws Exception {
-        given(pokemonService.getAllPokemon()).willReturn(pokemonList);
+    void testGetAllMove() throws Exception {
+        given(moveService.getAllMove()).willReturn(moveList);
 
-        mockMvc.perform(get(PokemonController.POKEMON_PATH)
+        mockMvc.perform(get(MoveController.MOVE_PATH)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()", is(3)));
+                .andExpect(jsonPath("$.length()", is(5)));
     }
 
     @Test
-    void testGetPokemonById() throws Exception {
-        var testPokemon = pokemonList.get(0);
-        given(pokemonService.getPokemonById(testPokemon.getId())).willReturn(Optional.of(testPokemon));
+    void testGetMoveById() throws Exception {
+        var testMove = moveList.get(0);
+        given(moveService.getMoveById(testMove.getId())).willReturn(Optional.of(testMove));
 
-        mockMvc.perform(get(PokemonController.POKEMON_PATH_ID, testPokemon.getId())
+        mockMvc.perform(get(MoveController.MOVE_PATH_ID, testMove.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(testPokemon.getId())))
-                .andExpect(jsonPath("$.name", is(testPokemon.getName())));
+                .andExpect(jsonPath("$.id", is(testMove.getId())))
+                .andExpect(jsonPath("$.name", is(testMove.getName())));
     }
 
     @Test
-    void testGetPokemonByIdNotFound() throws Exception {
-        given(pokemonService.getPokemonById(any(Integer.class))).willReturn(Optional.empty());
+    void testGetMoveByIdNotFound() throws Exception {
+        given(moveService.getMoveById(any(Integer.class))).willReturn(Optional.empty());
 
-        mockMvc.perform(get(PokemonController.POKEMON_PATH_ID, 1))
+        mockMvc.perform(get(MoveController.MOVE_PATH_ID, 1))
                 .andExpect(status().isNotFound());
     }
 

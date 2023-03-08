@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -19,27 +21,27 @@ public class PokemonController {
     private final PokemonService pokemonService;
 
     @PutMapping(POKEMON_PATH_ID)
-    public ResponseEntity updatePokemonById(@PathVariable("moveId") Integer moveId, @RequestBody Pokemon move) {
+    public ResponseEntity updatePokemonById(@PathVariable("pokemonId") Integer pokemonId, @RequestBody Pokemon pokemon) {
         return null;
     }
 
     @DeleteMapping(POKEMON_PATH_ID)
-    public ResponseEntity deletePokemonById(@PathVariable("moveId") Integer moveId) {
+    public ResponseEntity deletePokemonById(@PathVariable("pokemonId") Integer pokemonId) {
         return null;
     }
 
     @PostMapping(POKEMON_PATH)
-    public ResponseEntity createPokemon(@Validated @RequestBody Pokemon move) {
+    public ResponseEntity createPokemon(@Validated @RequestBody Pokemon pokemon) {
         return null;
     }
 
     @GetMapping(POKEMON_PATH)
-    public ResponseEntity getAllPokemons() {
+    public List<Pokemon> getAllPokemons() {
         return null;
     }
 
     @GetMapping(POKEMON_PATH_ID)
-    public ResponseEntity getPokemonById(@PathVariable("moveId") Integer moveId) {
+    public Pokemon getPokemonById(@PathVariable("pokemonId") Integer pokemonId) {
         return null;
     }
 

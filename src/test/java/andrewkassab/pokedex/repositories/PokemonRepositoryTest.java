@@ -28,11 +28,12 @@ class PokemonRepositoryTest extends PokedexTest {
 
     @Test
     void testSavePokemon() {
-        Pokemon savedPokemon = pokemonRepository.save(Pokemon.builder()
-                        .id(1)
-                        .name("Bulbasaur")
-                        .type(Type.GRASS)
-                .build());
+        Pokemon pokemonToSave = pokemonList.get(0);
+        Pokemon savedPokemon = pokemonRepository.save(pokemonToSave);
+        pokemonToSave.getMoves().add(moveList.get(0));
+        pokemonToSave.getMoves().add(moveList.get(1));
+        pokemonToSave.getMoves().add(moveList.get(2));
+        pokemonToSave.getMoves().add(moveList.get(3));
 
         pokemonRepository.flush();
         assertThat(savedPokemon).isNotNull();

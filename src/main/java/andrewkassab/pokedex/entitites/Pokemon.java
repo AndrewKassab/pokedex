@@ -32,6 +32,7 @@ public class Pokemon {
 
     @Size(max=4)
     @ManyToMany
+    @Builder.Default
     private Set<Move> moves = new HashSet<>();
 
     @NotNull
