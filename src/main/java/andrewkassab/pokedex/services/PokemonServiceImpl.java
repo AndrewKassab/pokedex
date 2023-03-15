@@ -1,10 +1,14 @@
 package andrewkassab.pokedex.services;
 
 import andrewkassab.pokedex.entitites.Pokemon;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Primary
+@Service
 public class PokemonServiceImpl implements PokemonService {
     @Override
     public List<Pokemon> getAllPokemon() {

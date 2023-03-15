@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -34,12 +36,12 @@ public class MoveController {
     }
 
     @GetMapping(MOVE_PATH)
-    public ResponseEntity getAllMoves() {
+    public List<Move> getAllMoves() {
         return null;
     }
 
     @GetMapping(MOVE_PATH_ID)
-    public ResponseEntity getMoveById(@PathVariable("moveId") Integer moveId) {
+    public Move getMoveById(@PathVariable("moveId") Integer moveId) {
         return null;
     }
 

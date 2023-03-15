@@ -4,6 +4,7 @@ import andrewkassab.pokedex.PokedexTest;
 import andrewkassab.pokedex.controller.PokemonController;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Pokemon;
+import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.PokemonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
@@ -99,6 +100,7 @@ class PokemonIntegrationTest extends PokedexTest {
         Pokemon newPokemon = Pokemon.builder()
                 .id(2)
                 .name("Ivysaur")
+                .type(Type.GRASS)
                 .build();
 
         var response = pokemonController.createPokemon(newPokemon);
