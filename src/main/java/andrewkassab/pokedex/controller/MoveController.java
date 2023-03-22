@@ -1,9 +1,12 @@
 package andrewkassab.pokedex.controller;
 
+import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Move;
 import andrewkassab.pokedex.services.MoveService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,27 +25,43 @@ public class MoveController {
 
     @PutMapping(MOVE_PATH_ID)
     public ResponseEntity updateMoveById(@PathVariable("moveId") Integer moveId, @RequestBody Move move) {
-        return null;
+
+        if (moveService.updateMoveById(moveId, move).isEmpty()) {
+            throw new NotFoundException();
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(MOVE_PATH_ID)
     public ResponseEntity deleteMoveById(@PathVariable("moveId") Integer moveId) {
-        return null;
+
+        if (!moveService.deleteMoveById(moveId)) {
+            throw new NotFoundException();
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping(MOVE_PATH)
     public ResponseEntity createMove(@Validated @RequestBody Move move) {
-        return null;
+
+        var savedMove = moveService.saveNewMove(move);
+
+        var headers = new HttpHeaders();
+        headers.add("Location", MOVE_PATH + "/" + savedMove.getId().toString());
+
+        return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
     @GetMapping(MOVE_PATH)
     public List<Move> getAllMoves() {
-        return null;
+        return moveService.getAllMoves();
     }
 
     @GetMapping(MOVE_PATH_ID)
     public Move getMoveById(@PathVariable("moveId") Integer moveId) {
-        return null;
+        return moveService.getMoveById(moveId).orElseThrow(NotFoundException::new);
     }
 
 }

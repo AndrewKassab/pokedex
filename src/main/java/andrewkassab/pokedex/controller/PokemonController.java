@@ -1,9 +1,12 @@
 package andrewkassab.pokedex.controller;
 
+import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Pokemon;
 import andrewkassab.pokedex.services.PokemonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -22,27 +25,42 @@ public class PokemonController {
 
     @PutMapping(POKEMON_PATH_ID)
     public ResponseEntity updatePokemonById(@PathVariable("pokemonId") Integer pokemonId, @RequestBody Pokemon pokemon) {
-        return null;
+        if (pokemonService.updatePokemonById(pokemonId, pokemon).isEmpty()) {
+            throw new NotFoundException();
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(POKEMON_PATH_ID)
     public ResponseEntity deletePokemonById(@PathVariable("pokemonId") Integer pokemonId) {
-        return null;
+
+        if (!pokemonService.deletePokemonById(pokemonId)) {
+            throw new NotFoundException();
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping(POKEMON_PATH)
     public ResponseEntity createPokemon(@Validated @RequestBody Pokemon pokemon) {
-        return null;
+
+        var savedPokemon = pokemonService.saveNewPokemon(pokemon);
+
+        var headers = new HttpHeaders();
+        headers.add("Location", POKEMON_PATH + "/" + savedPokemon.getId());
+
+        return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
     @GetMapping(POKEMON_PATH)
     public List<Pokemon> getAllPokemons() {
-        return null;
+        return pokemonService.getAllPokemon();
     }
 
     @GetMapping(POKEMON_PATH_ID)
     public Pokemon getPokemonById(@PathVariable("pokemonId") Integer pokemonId) {
-        return null;
+        return pokemonService.getPokemonById(pokemonId).orElseThrow(NotFoundException::new);
     }
 
 }

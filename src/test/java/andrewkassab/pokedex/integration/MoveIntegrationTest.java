@@ -8,6 +8,7 @@ import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.MoveRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,7 +37,7 @@ class MoveIntegrationTest extends PokedexTest {
 
     MockMvc mockMvc;
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
         var move = getFiveMoves();
         moveRepository.saveAll(move);
@@ -105,7 +106,7 @@ class MoveIntegrationTest extends PokedexTest {
         assertNotNull(response.getHeaders().getLocation());
 
         String[] locationId = response.getHeaders().getLocation().getPath().split("/");
-        var savedId = Integer.parseInt(locationId[4]);
+        var savedId = Integer.parseInt(locationId[3]);
 
         Move returnedMove = moveRepository.findById(savedId).orElse(null);
 
@@ -121,6 +122,8 @@ class MoveIntegrationTest extends PokedexTest {
         assertNotNull(moveReturned);
     }
 
+    @Transactional
+    @Rollback
     @Test
     void testGetMoveEmpty() {
         moveRepository.deleteAll();
@@ -133,7 +136,7 @@ class MoveIntegrationTest extends PokedexTest {
     void testGetAllMove() {
         var moveList = moveController.getAllMoves();
 
-        assertEquals(moveList.size(), 3);
+        assertEquals(5, moveList.size());
     }
 
 

@@ -19,9 +19,10 @@ public class Move {
     private Integer id;
 
     @NotBlank
-    @NonNull
+    @NotNull
     private String name;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
     private Type type;
 

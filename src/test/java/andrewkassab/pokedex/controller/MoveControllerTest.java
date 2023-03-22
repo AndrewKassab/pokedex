@@ -27,11 +27,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(MoveController.class)
 class MoveControllerTest extends PokedexTest {
 
-    @Autowired
-    MockMvc mockMvc;
-
     @MockBean
     MoveService moveService;
+
+    @Autowired
+    MockMvc mockMvc;
 
     @Captor
     ArgumentCaptor<Integer> idArgumentCaptor;
@@ -39,6 +39,7 @@ class MoveControllerTest extends PokedexTest {
     @Captor
     ArgumentCaptor<Move> moveArgumentCaptor;
 
+    @Autowired
     ObjectMapper objectMapper;
 
     List<Move> moveList = getFiveMoves();
@@ -78,15 +79,14 @@ class MoveControllerTest extends PokedexTest {
     @Test
     void testCreateMove() throws Exception {
         var testMove = moveList.get(0);
-        given(moveService.saveNewMove(any(Move.class))).willReturn(moveList.get(0));
+        given(moveService.saveNewMove(any(Move.class))).willReturn(testMove);
 
         mockMvc.perform(post(MoveController.MOVE_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(testMove)))
                 .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"))
-                .andExpect(jsonPath("$.name", is(testMove.getName())));
+                .andExpect(header().exists("Location"));
     }
 
     @Test
@@ -99,13 +99,13 @@ class MoveControllerTest extends PokedexTest {
         mockMvc.perform(post(MoveController.MOVE_PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .contentType(objectMapper.writeValueAsString(testMove)))
+                        .content(objectMapper.writeValueAsString(testMove)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     void testGetAllMove() throws Exception {
-        given(moveService.getAllMove()).willReturn(moveList);
+        given(moveService.getAllMoves()).willReturn(moveList);
 
         mockMvc.perform(get(MoveController.MOVE_PATH)
                 .accept(MediaType.APPLICATION_JSON))

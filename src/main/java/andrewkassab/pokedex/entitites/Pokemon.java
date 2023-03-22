@@ -35,6 +35,7 @@ public class Pokemon {
     @Builder.Default
     private Set<Move> moves = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
     @NotNull
     private Type type;
 

@@ -7,21 +7,16 @@ import andrewkassab.pokedex.entitites.Pokemon;
 import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.PokemonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import static java.net.HttpURLConnection.HTTP_CREATED;
-import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -41,7 +36,7 @@ class PokemonIntegrationTest extends PokedexTest {
 
     MockMvc mockMvc;
 
-    @BeforeAll
+    @BeforeEach
     void setUp() {
         var pokemon = getThreeStarterPokemon();
         pokemonRepository.saveAll(pokemon);
@@ -109,7 +104,7 @@ class PokemonIntegrationTest extends PokedexTest {
         assertNotNull(response.getHeaders().getLocation());
 
         String[] locationId = response.getHeaders().getLocation().getPath().split("/");
-        var savedId = Integer.parseInt(locationId[4]);
+        var savedId = Integer.parseInt(locationId[3]);
 
         Pokemon returnedPokemon = pokemonRepository.findById(savedId).orElse(null);
 
@@ -125,6 +120,8 @@ class PokemonIntegrationTest extends PokedexTest {
         assertNotNull(pokemonReturned);
     }
 
+    @Transactional
+    @Rollback
     @Test
     void testGetPokemonEmpty() {
         pokemonRepository.deleteAll();

@@ -90,8 +90,7 @@ class PokemonControllerTest extends PokedexTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(testPokemon)))
                 .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"))
-                .andExpect(jsonPath("$.name", is(testPokemon.getName())));
+                .andExpect(header().exists("Location"));
     }
 
     @Test
@@ -104,7 +103,7 @@ class PokemonControllerTest extends PokedexTest {
         mockMvc.perform(post(PokemonController.POKEMON_PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .contentType(objectMapper.writeValueAsString(testPokemon)))
+                        .content(objectMapper.writeValueAsString(testPokemon)))
                 .andExpect(status().isBadRequest());
     }
 

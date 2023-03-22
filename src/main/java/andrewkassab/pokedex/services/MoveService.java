@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface MoveService {
 
-    List<Move> getAllMove();
+    List<Move> getAllMoves();
 
     Optional<Move> getMoveById(Integer id);
 
