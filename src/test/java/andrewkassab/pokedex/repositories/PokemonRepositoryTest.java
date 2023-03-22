@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,18 +21,23 @@ class PokemonRepositoryTest extends PokedexTest {
     @Autowired
     PokemonRepository pokemonRepository;
 
+    @Autowired
+    MoveRepository moveRepository;
+
     List<Pokemon> pokemonList = getThreeStarterPokemon();
 
     List<Move> moveList = getFiveMoves();
 
     @Test
     void testSavePokemon() {
+        moveRepository.saveAll(moveList);
         Pokemon pokemonToSave = pokemonList.get(0);
-        Pokemon savedPokemon = pokemonRepository.save(pokemonToSave);
         pokemonToSave.getMoves().add(moveList.get(0));
         pokemonToSave.getMoves().add(moveList.get(1));
         pokemonToSave.getMoves().add(moveList.get(2));
         pokemonToSave.getMoves().add(moveList.get(3));
+
+        Pokemon savedPokemon = pokemonRepository.save(pokemonToSave);
 
         pokemonRepository.flush();
         assertThat(savedPokemon).isNotNull();
@@ -64,6 +68,7 @@ class PokemonRepositoryTest extends PokedexTest {
 
     @Test
     void testSavePokemonTooManyMoves() {
+        moveRepository.saveAll(getFiveMoves());
         var pokemonToSave = pokemonList.get(0);
         pokemonToSave.setMoves(new HashSet<>(moveList));
         assertThrows(ConstraintViolationException.class, () -> {

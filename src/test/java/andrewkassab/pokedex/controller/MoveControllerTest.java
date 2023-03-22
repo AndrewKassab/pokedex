@@ -47,6 +47,7 @@ class MoveControllerTest extends PokedexTest {
     @Test
     void testDeleteMove() throws Exception {
         var testMove = moveList.get(0);
+        testMove.setId(1);
         given(moveService.deleteMoveById(any())).willReturn(true);
 
         mockMvc.perform(delete(MoveController.MOVE_PATH_ID, testMove.getId())
@@ -61,6 +62,7 @@ class MoveControllerTest extends PokedexTest {
     @Test
     void testUpdateMove() throws Exception {
         var testMove = moveList.get(0);
+        testMove.setId(1);
         testMove.setName("New Name");
         given(moveService.updateMoveById(any(), any())).willReturn(Optional.of(testMove));
 
@@ -79,6 +81,7 @@ class MoveControllerTest extends PokedexTest {
     @Test
     void testCreateMove() throws Exception {
         var testMove = moveList.get(0);
+        testMove.setId(1);
         given(moveService.saveNewMove(any(Move.class))).willReturn(testMove);
 
         mockMvc.perform(post(MoveController.MOVE_PATH)
@@ -117,6 +120,7 @@ class MoveControllerTest extends PokedexTest {
     @Test
     void testGetMoveById() throws Exception {
         var testMove = moveList.get(0);
+        testMove.setId(1);
         given(moveService.getMoveById(testMove.getId())).willReturn(Optional.of(testMove));
 
         mockMvc.perform(get(MoveController.MOVE_PATH_ID, testMove.getId())

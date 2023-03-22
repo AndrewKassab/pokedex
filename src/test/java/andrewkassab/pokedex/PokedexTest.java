@@ -40,31 +40,26 @@ public abstract class PokedexTest {
 
     protected List<Move> getFiveMoves() {
         Move moveOne = Move.builder()
-                .id(1)
                 .name("Flamethrower")
                 .type(Type.FIRE)
                 .build();
 
         Move moveTwo = Move.builder()
-                .id(2)
                 .name("Razor Leaf")
                 .type(Type.GRASS)
                 .build();
 
         Move moveThree = Move.builder()
-                .id(3)
                 .name("Water Gun")
                 .type(Type.WATER)
                 .build();
 
         Move moveFour = Move.builder()
-                .id(4)
                 .name("Hydro Pump")
                 .type(Type.WATER)
                 .build();
 
         Move moveFive = Move.builder()
-                .id(5)
                 .name("Ember")
                 .type(Type.FIRE)
                 .build();
