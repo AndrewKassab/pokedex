@@ -1,5 +1,7 @@
 package andrewkassab.pokedex.controller;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -30,6 +32,11 @@ public class CustomErrorController {
                 }).collect(Collectors.toList());
 
         return ResponseEntity.badRequest().body(errorList);
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    ResponseEntity handleForeignKeyNotFoundErrors(EntityNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
 }
