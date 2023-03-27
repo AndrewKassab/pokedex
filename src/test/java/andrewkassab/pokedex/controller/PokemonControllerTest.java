@@ -2,11 +2,9 @@ package andrewkassab.pokedex.controller;
 
 import andrewkassab.pokedex.PokedexTest;
 import andrewkassab.pokedex.entitites.Pokemon;
-import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.services.PokemonService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -105,6 +103,25 @@ class PokemonControllerTest extends PokedexTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testPokemon)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testCreatePokemonNotFoundMove() throws Exception {
+        var testPokemon = pokemonList.get(0);
+        String errorMessage = "Move not found";
+        EntityNotFoundException exception = new EntityNotFoundException(errorMessage);
+        given(pokemonService.saveNewPokemon(any(Pokemon.class))).willThrow(exception);
+
+        var result = mockMvc.perform(post(PokemonController.POKEMON_PATH)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testPokemon)))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        var content = result.getResponse().getContentAsString();
+
+        assertThat(content).isEqualTo(errorMessage);
     }
 
     @Test

@@ -3,6 +3,7 @@ package andrewkassab.pokedex.integration;
 import andrewkassab.pokedex.PokedexTest;
 import andrewkassab.pokedex.controller.PokemonController;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
+import andrewkassab.pokedex.entitites.Move;
 import andrewkassab.pokedex.entitites.Pokemon;
 import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.PokemonRepository;
