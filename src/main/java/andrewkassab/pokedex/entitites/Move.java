@@ -1,6 +1,8 @@
 package andrewkassab.pokedex.entitites;
 
 import andrewkassab.pokedex.models.Type;
+import andrewkassab.pokedex.models.TypeDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,6 +28,7 @@ public class Move {
 
     @Enumerated(EnumType.STRING)
     @NotNull
+    @JsonDeserialize(using = TypeDeserializer.class)
     private Type type;
 
 }
