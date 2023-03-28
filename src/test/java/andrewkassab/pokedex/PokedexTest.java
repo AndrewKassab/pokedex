@@ -38,7 +38,7 @@ public abstract class PokedexTest {
         return pokemonList;
     }
 
-    protected List<Move> getFiveMoves() {
+    protected static List<Move> getFiveMoves() {
         Move moveOne = Move.builder()
                 .name("Flamethrower")
                 .type(Type.FIRE)

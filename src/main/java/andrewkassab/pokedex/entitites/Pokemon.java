@@ -21,7 +21,7 @@ import java.util.Set;
 public class Pokemon {
 
     @Id
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @NotNull

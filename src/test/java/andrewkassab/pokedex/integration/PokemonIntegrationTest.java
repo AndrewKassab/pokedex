@@ -40,6 +40,7 @@ class PokemonIntegrationTest extends PokedexTest {
     @BeforeEach
     void setUp() {
         var pokemon = getThreeStarterPokemon();
+        var savedPokemon = pokemonRepository.findAll();
         pokemonRepository.saveAll(pokemon);
     }
 
@@ -94,7 +95,6 @@ class PokemonIntegrationTest extends PokedexTest {
     @Test
     void testCreatePokemon() {
         Pokemon newPokemon = Pokemon.builder()
-                .id(2)
                 .name("Ivysaur")
                 .type(Type.GRASS)
                 .build();
@@ -111,7 +111,6 @@ class PokemonIntegrationTest extends PokedexTest {
 
         assertNotNull(returnedPokemon);
     }
-
 
     @Test
     void testGetPokemonById() {
