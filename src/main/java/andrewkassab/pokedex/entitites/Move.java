@@ -21,6 +21,7 @@ public class Move {
 
     @NotBlank
     @NotNull
+    @Column(length = 50, unique = true)
     private String name;
 
     @Enumerated(EnumType.STRING)
