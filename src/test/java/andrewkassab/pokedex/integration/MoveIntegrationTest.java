@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -39,8 +40,6 @@ class MoveIntegrationTest extends PokedexTest {
 
     @BeforeEach
     void setUp() {
-        var move = getFiveMoves();
-        moveRepository.saveAll(move);
     }
 
     @Test
@@ -54,7 +53,7 @@ class MoveIntegrationTest extends PokedexTest {
     @Transactional
     @Test
     void testDeleteMove() {
-        var move = moveRepository.findAll().get(0);
+        var move = moveRepository.save(getFiveMoves().get(0));
 
         var response = moveController.deleteMoveById(move.getId());
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
@@ -73,19 +72,16 @@ class MoveIntegrationTest extends PokedexTest {
     @Rollback
     @Test
     void testUpdateMove() {
-        var move = moveRepository.findAll().get(0);
-        var moveId = move.getId();
-        move.setId(null);
-        move.setType(null);
+        var move = moveRepository.save(getFiveMoves().get(0));
 
         var newName = "New Move";
         move.setName(newName);
 
-        var response = moveController.updateMoveById(moveId, move);
+        var response = moveController.updateMoveById(move.getId(), move);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
-        var returnedMove = moveRepository.findById(moveId).orElse(null);
+        var returnedMove = moveRepository.findById(move.getId()).orElse(null);
 
         assertEquals(newName, returnedMove.getName());
     }
@@ -94,11 +90,7 @@ class MoveIntegrationTest extends PokedexTest {
     @Rollback
     @Test
     void testCreateMove() {
-        Move newMove = Move.builder()
-                .id(2)
-                .name("Life Drain")
-                .type(Type.GRASS)
-                .build();
+        Move newMove = getFiveMoves().get(0);
 
         var response = moveController.createMove(newMove);
 
@@ -114,26 +106,30 @@ class MoveIntegrationTest extends PokedexTest {
     }
 
 
+    @Transactional
+    @Rollback
     @Test
     void testGetMoveById() {
-        var move = moveRepository.findAll().get(0);
+        var move = moveRepository.save(getFiveMoves().get(0));
         var moveReturned = moveController.getMoveById(move.getId());
 
         assertNotNull(moveReturned);
+        assertThat(moveReturned.getName()).isEqualTo(move.getName());
+    }
+
+    @Test
+    void testGetMoveEmpty() {
+        var moveList = moveController.getAllMoves();
+
+        assertThat(moveList.size()).isEqualTo(0);
     }
 
     @Transactional
     @Rollback
     @Test
-    void testGetMoveEmpty() {
-        moveRepository.deleteAll();
-        var moveList = moveController.getAllMoves();
-
-        assertEquals(moveList.size(), 0);
-    }
-
-    @Test
     void testGetAllMove() {
+        moveRepository.saveAll(getFiveMoves());
+
         var moveList = moveController.getAllMoves();
 
         assertEquals(5, moveList.size());
