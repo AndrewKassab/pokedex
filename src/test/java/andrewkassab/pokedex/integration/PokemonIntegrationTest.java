@@ -3,12 +3,9 @@ package andrewkassab.pokedex.integration;
 import andrewkassab.pokedex.PokedexTest;
 import andrewkassab.pokedex.controller.PokemonController;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
-import andrewkassab.pokedex.entitites.Move;
 import andrewkassab.pokedex.entitites.Pokemon;
-import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.PokemonRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,13 +34,6 @@ class PokemonIntegrationTest extends PokedexTest {
 
     MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-        var pokemon = getThreeStarterPokemon();
-        var savedPokemon = pokemonRepository.findAll();
-        pokemonRepository.saveAll(pokemon);
-    }
-
     @Test
     void testDeletePokemonDoesntExist() {
         assertThrows(NotFoundException.class, () -> {
@@ -55,6 +45,7 @@ class PokemonIntegrationTest extends PokedexTest {
     @Transactional
     @Test
     void testDeletePokemon() {
+        pokemonRepository.save(getThreeStarterPokemon().get(0));
         var pokemon = pokemonRepository.findAll().get(0);
 
         var response = pokemonController.deletePokemonById(pokemon.getId());
@@ -74,18 +65,16 @@ class PokemonIntegrationTest extends PokedexTest {
     @Rollback
     @Test
     void testUpdatePokemon() {
-        var pokemon = pokemonRepository.findAll().get(0);
-        var pokemonId = pokemon.getId();
-        pokemon.setId(null);
+        var pokemon = pokemonRepository.save(getThreeStarterPokemon().get(0));
 
         var newName = "New Pokemon";
         pokemon.setName(newName);
 
-        var response = pokemonController.updatePokemonById(pokemonId, pokemon);
+        var response = pokemonController.updatePokemonById(pokemon.getId(), pokemon);
 
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
-        var returnedPokemon = pokemonRepository.findById(pokemonId).orElse(null);
+        var returnedPokemon = pokemonRepository.findById(pokemon.getId()).orElse(null);
 
         assertEquals(newName, returnedPokemon.getName());
     }
@@ -94,10 +83,7 @@ class PokemonIntegrationTest extends PokedexTest {
     @Rollback
     @Test
     void testCreatePokemon() {
-        Pokemon newPokemon = Pokemon.builder()
-                .name("Ivysaur")
-                .type(Type.GRASS)
-                .build();
+        Pokemon newPokemon = getThreeStarterPokemon().get(0);
 
         var response = pokemonController.createPokemon(newPokemon);
 
@@ -112,10 +98,12 @@ class PokemonIntegrationTest extends PokedexTest {
         assertNotNull(returnedPokemon);
     }
 
+    @Transactional
+    @Rollback
     @Test
     void testGetPokemonById() {
-        var pokemon = pokemonRepository.findAll().get(0);
-        var pokemonReturned = pokemonController.getPokemonById(pokemon.getId());
+        var savedPokemon = pokemonRepository.save(getThreeStarterPokemon().get(0));
+        var pokemonReturned = pokemonController.getPokemonById(savedPokemon.getId());
 
         assertNotNull(pokemonReturned);
     }
@@ -124,14 +112,16 @@ class PokemonIntegrationTest extends PokedexTest {
     @Rollback
     @Test
     void testGetPokemonEmpty() {
-        pokemonRepository.deleteAll();
         var pokemonList = pokemonController.getAllPokemons();
 
         assertEquals(pokemonList.size(), 0);
     }
 
+    @Transactional
+    @Rollback
     @Test
     void testGetAllPokemon() {
+        pokemonRepository.saveAll(getThreeStarterPokemon());
         var pokemonList = pokemonController.getAllPokemons();
 
         assertEquals(pokemonList.size(), 3);

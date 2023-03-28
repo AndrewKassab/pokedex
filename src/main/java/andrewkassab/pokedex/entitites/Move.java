@@ -16,6 +16,7 @@ public class Move {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
     private Integer id;
 
     @NotBlank
