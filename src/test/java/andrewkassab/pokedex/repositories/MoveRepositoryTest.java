@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -43,10 +44,28 @@ class MoveRepositoryTest {
     void testSaveMoveMissingType() {
         assertThrows(ConstraintViolationException.class, () -> {
             Move savedMove = moveRepository.save(Move.builder()
-                    .id(1)
                     .name("Razor Leaf")
                     .build());
             moveRepository.flush();
+        });
+    }
+
+    @Test
+    void testSaveMoveDuplicateName() {
+        Move newMoveOne = Move.builder()
+                .name("New Move")
+                .type(Type.GRASS)
+                .build();
+        Move newMoveTwo = Move.builder()
+                .name("New Move")
+                .type(Type.FIRE)
+                .build();
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            moveRepository.save(newMoveOne);
+            moveRepository.save(newMoveTwo);
+            moveRepository.flush();
+            var moves = moveRepository.findAll();
+            System.out.println("stop");
         });
     }
 }
