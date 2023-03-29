@@ -1,5 +1,6 @@
 package andrewkassab.pokedex.models;
 
+import andrewkassab.pokedex.controller.exceptions.TypeNotValidException;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -16,7 +17,7 @@ public class TypeDeserializer extends JsonDeserializer<Type> {
         try {
             return Type.valueOf(value.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InvalidFormatException(jsonParser, "Invalid value for Type", value, Type.class);
+            throw new TypeNotValidException("Type " + value + " is not a valid Type");
         }
     }
 

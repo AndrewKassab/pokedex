@@ -11,6 +11,8 @@ public interface MoveService {
 
     Optional<Move> getMoveById(Integer id);
 
+    Optional<Move> getMoveByName(String name);
+
     Move saveNewMove(Move pokemon);
 
     Optional<Move> updateMoveById(Integer id, Move pokemon);

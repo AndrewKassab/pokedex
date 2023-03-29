@@ -2,11 +2,14 @@ package andrewkassab.pokedex.entitites;
 
 import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.models.TypeDeserializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,8 +20,8 @@ import lombok.*;
 public class Move {
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
     private Integer id;
 
     @NotBlank
@@ -30,5 +33,11 @@ public class Move {
     @NotNull
     @JsonDeserialize(using = TypeDeserializer.class)
     private Type type;
+
+    @JsonIgnore
+    private LocalDateTime createdDate;
+
+    @JsonIgnore
+    private LocalDateTime updatedDate;
 
 }

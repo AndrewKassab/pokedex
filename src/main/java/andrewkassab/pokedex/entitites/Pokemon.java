@@ -3,12 +3,14 @@ package andrewkassab.pokedex.entitites;
 
 import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.models.TypeDeserializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -23,8 +25,8 @@ import java.util.Set;
 public class Pokemon {
 
     @Id
+    @JsonIgnore
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotNull
     private Integer id;
 
     @NotNull
@@ -43,8 +45,10 @@ public class Pokemon {
     @NotNull
     private Type type;
 
+    @JsonIgnore
     private LocalDateTime createdDate;
 
+    @JsonIgnore
     private LocalDateTime updatedDate;
 
 }

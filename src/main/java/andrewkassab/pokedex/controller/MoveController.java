@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +46,11 @@ public class MoveController {
 
     @PostMapping(MOVE_PATH)
     public ResponseEntity createMove(@Validated @RequestBody Move move) {
+
+        if (moveService.getMoveByName(move.getName()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body("Move name already exists");
+        }
 
         var savedMove = moveService.saveNewMove(move);
 

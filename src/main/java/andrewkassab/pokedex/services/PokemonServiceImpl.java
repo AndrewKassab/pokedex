@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -30,6 +31,8 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public Pokemon saveNewPokemon(Pokemon pokemon) {
+        pokemon.setCreatedDate(LocalDateTime.now());
+        pokemon.setUpdatedDate(LocalDateTime.now());
         return pokemonRepository.save(pokemon);
     }
 
@@ -37,11 +40,12 @@ public class PokemonServiceImpl implements PokemonService {
     public Optional<Pokemon> updatePokemonById(Integer id, Pokemon pokemon) {
         var atomicReference = new AtomicReference<Optional<Pokemon>>();
 
-        pokemonRepository.findById(id).ifPresentOrElse(foundMove -> {
-            foundMove.setType(pokemon.getType());
-            foundMove.setName(pokemon.getName());
-            foundMove.setMoves(pokemon.getMoves());
-            atomicReference.set(Optional.of(pokemonRepository.save(foundMove)));
+        pokemonRepository.findById(id).ifPresentOrElse(foundPokemon -> {
+            foundPokemon.setType(pokemon.getType());
+            foundPokemon.setName(pokemon.getName());
+            foundPokemon.setMoves(pokemon.getMoves());
+            foundPokemon.setUpdatedDate(LocalDateTime.now());
+            atomicReference.set(Optional.of(pokemonRepository.save(foundPokemon)));
         }, () -> {
             atomicReference.set(Optional.empty());
         });

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -29,7 +30,14 @@ public class MoveServiceImpl implements MoveService {
     }
 
     @Override
+    public Optional<Move> getMoveByName(String name) {
+        return moveRepository.findByName(name);
+    }
+
+    @Override
     public Move saveNewMove(Move move) {
+        move.setCreatedDate(LocalDateTime.now());
+        move.setUpdatedDate(LocalDateTime.now());
         return moveRepository.save(move);
     }
 
@@ -40,6 +48,7 @@ public class MoveServiceImpl implements MoveService {
         moveRepository.findById(id).ifPresentOrElse(foundMove -> {
             foundMove.setType(move.getType());
             foundMove.setName(move.getName());
+            foundMove.setUpdatedDate(LocalDateTime.now());
             atomicReference.set(Optional.of(moveRepository.save(foundMove)));
         }, () -> {
             atomicReference.set(Optional.empty());
