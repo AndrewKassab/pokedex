@@ -3,6 +3,7 @@ package andrewkassab.pokedex.controller;
 import andrewkassab.pokedex.PokedexTest;
 import andrewkassab.pokedex.entitites.Move;
 import andrewkassab.pokedex.services.MoveService;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -104,6 +106,24 @@ class MoveControllerTest extends PokedexTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testMove)))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testCreateMoveInvalidType() throws Exception {
+        var testMove = moveList.get(0);
+        Map<String, Object> valueAsMap = objectMapper.convertValue(testMove, new TypeReference<Map<String, Object>>() {});
+        valueAsMap.put("type", "faketype");
+
+        var result = mockMvc.perform(post(MoveController.MOVE_PATH)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(valueAsMap)))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        var content = result.getResponse().getContentAsString();
+
+        assertThat(content).isEqualTo("Type faketype is not a valid Type");
     }
 
     @Test

@@ -4,6 +4,7 @@ package andrewkassab.pokedex.entitites;
 import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.models.TypeDeserializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -25,7 +26,7 @@ import java.util.Set;
 public class Pokemon {
 
     @Id
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
@@ -45,10 +46,10 @@ public class Pokemon {
     @NotNull
     private Type type;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdDate;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime updatedDate;
 
 }

@@ -1,5 +1,6 @@
 package andrewkassab.pokedex.controller;
 
+import andrewkassab.pokedex.controller.exceptions.TypeNotValidException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,6 +42,11 @@ public class CustomErrorController {
     @ExceptionHandler(EntityNotFoundException.class)
     ResponseEntity handleForeignKeyNotFoundErrors(Exception exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(TypeNotValidException.class)
+    ResponseEntity handleTypeNotValid(TypeNotValidException exception) {
+        return ResponseEntity.badRequest().body(exception.getMessage());
     }
 
 }

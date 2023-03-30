@@ -67,6 +67,7 @@ public class MoveController {
 
     @GetMapping(MOVE_PATH_ID)
     public Move getMoveById(@PathVariable("moveId") Integer moveId) {
+        var move = moveService.getMoveById(moveId);
         return moveService.getMoveById(moveId).orElseThrow(NotFoundException::new);
     }
 
