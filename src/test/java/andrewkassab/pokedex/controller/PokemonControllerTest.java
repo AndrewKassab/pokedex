@@ -51,6 +51,7 @@ class PokemonControllerTest extends PokedexTest {
     @Test
     void testDeletePokemon() throws Exception {
         var testPokemon = pokemonList.get(0);
+        testPokemon.setId(1);
         given(pokemonService.deletePokemonById(any())).willReturn(true);
 
         mockMvc.perform(delete(PokemonController.POKEMON_PATH_ID, testPokemon.getId())
@@ -66,6 +67,7 @@ class PokemonControllerTest extends PokedexTest {
     void testUpdatePokemon() throws Exception {
         var testPokemon = pokemonList.get(0);
         testPokemon.setName("New Name");
+        testPokemon.setId(1);
         given(pokemonService.updatePokemonById(any(), any())).willReturn(Optional.of(testPokemon));
 
         mockMvc.perform(put(PokemonController.POKEMON_PATH_ID, testPokemon.getId())
@@ -158,6 +160,7 @@ class PokemonControllerTest extends PokedexTest {
     @Test
     void testGetPokemonById() throws Exception {
         var testPokemon = pokemonList.get(0);
+        testPokemon.setId(1);
         given(pokemonService.getPokemonById(testPokemon.getId())).willReturn(Optional.of(testPokemon));
 
         mockMvc.perform(get(PokemonController.POKEMON_PATH_ID, testPokemon.getId())
