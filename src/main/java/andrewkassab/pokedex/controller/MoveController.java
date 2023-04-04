@@ -1,5 +1,6 @@
 package andrewkassab.pokedex.controller;
 
+import andrewkassab.pokedex.controller.exceptions.IdProvidedException;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Move;
 import andrewkassab.pokedex.services.MoveService;
@@ -47,6 +48,9 @@ public class MoveController {
     @PostMapping(MOVE_PATH)
     public ResponseEntity createMove(@Validated @RequestBody Move move) {
 
+        if (move.getId() != null) {
+            throw new IdProvidedException("id should not be provided");
+        }
         if (moveService.getMoveByName(move.getName()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("Move name already exists");

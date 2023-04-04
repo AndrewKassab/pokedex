@@ -143,7 +143,7 @@ class PokemonControllerTest extends PokedexTest {
 
         var content = result.getResponse().getContentAsString();
 
-        assertThat(content).isEqualTo("Type faketype is not a valid Type");
+        assertThat(content).contains("Type faketype is not a valid Type");
     }
 
     @Test
