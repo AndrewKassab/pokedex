@@ -2,16 +2,12 @@ package andrewkassab.pokedex.entitites;
 
 
 import andrewkassab.pokedex.models.Type;
-import andrewkassab.pokedex.models.TypeDeserializer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -42,7 +38,6 @@ public class Pokemon {
     private Set<Move> moves = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
-    @JsonDeserialize(using = TypeDeserializer.class)
     @NotNull
     private Type type;
 

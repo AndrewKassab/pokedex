@@ -85,11 +85,13 @@ class MoveControllerTest extends PokedexTest {
         var testMove = moveList.get(0);
         testMove.setId(1);
         given(moveService.saveNewMove(any(Move.class))).willReturn(testMove);
+        Map<String, Object> valueAsMap = objectMapper.convertValue(testMove, new TypeReference<Map<String, Object>>() {});
+        valueAsMap.put("id", null);
 
         mockMvc.perform(post(MoveController.MOVE_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(testMove)))
+                    .content(objectMapper.writeValueAsString(valueAsMap)))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"));
     }
@@ -123,7 +125,7 @@ class MoveControllerTest extends PokedexTest {
 
         var content = result.getResponse().getContentAsString();
 
-        assertThat(content).isEqualTo("Type faketype is not a valid Type");
+        assertThat(content).isEqualTo("Invalid type value: faketype");
     }
 
     @Test
