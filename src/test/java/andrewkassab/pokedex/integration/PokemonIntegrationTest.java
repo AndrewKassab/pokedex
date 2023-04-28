@@ -152,10 +152,13 @@ class PokemonIntegrationTest {
     }
 
     @Test
-    void testGetFivePokemon() {
-        var pokemonList = pokemonController.getAllPokemons(null, null, 5);
+    void testGetFivePokemon() throws Exception {
+        var result = mockMvc.perform(get(PokemonController.POKEMON_PATH)
+                        .queryParam("pageSize", "5"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.size()", is(5)))
+                .andReturn();
 
-        assertEquals(5, pokemonList.getContent().size());
     }
 
 }
