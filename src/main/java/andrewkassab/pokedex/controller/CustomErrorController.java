@@ -61,9 +61,4 @@ public class CustomErrorController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
-    @ExceptionHandler({TypeNotValidException.class, IdProvidedException.class})
-    ResponseEntity handleTypeNotValid(Exception exception) {
-        return ResponseEntity.badRequest().body(exception.getMessage());
-    }
-
 }

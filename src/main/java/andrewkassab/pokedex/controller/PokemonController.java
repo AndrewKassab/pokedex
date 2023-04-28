@@ -2,6 +2,7 @@ package andrewkassab.pokedex.controller;
 
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Pokemon;
+import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.services.PokemonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,8 +55,8 @@ public class PokemonController {
     }
 
     @GetMapping(POKEMON_PATH)
-    public List<Pokemon> getAllPokemons() {
-        return pokemonService.getAllPokemon();
+    public List<Pokemon> getAllPokemons(@RequestParam(required = false) Type type) {
+        return pokemonService.getAllPokemon(type);
     }
 
     @GetMapping(POKEMON_PATH_ID)

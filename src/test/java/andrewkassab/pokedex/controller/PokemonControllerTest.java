@@ -148,7 +148,7 @@ class PokemonControllerTest extends PokedexTest {
 
     @Test
     void testGetAllPokemon() throws Exception {
-        given(pokemonService.getAllPokemon()).willReturn(pokemonList);
+        given(pokemonService.getAllPokemon(null)).willReturn(pokemonList);
 
         mockMvc.perform(get(PokemonController.POKEMON_PATH)
                 .accept(MediaType.APPLICATION_JSON))

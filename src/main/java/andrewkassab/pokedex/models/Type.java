@@ -15,4 +15,13 @@ public enum Type {
         throw new IllegalArgumentException("Invalid type value: " + value);
     }
 
+    public static boolean valueExists(String value) {
+        for (Type type : values()) {
+            if (type.toString().equalsIgnoreCase(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

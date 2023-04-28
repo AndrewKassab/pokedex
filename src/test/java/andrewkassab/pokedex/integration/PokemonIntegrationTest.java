@@ -4,18 +4,27 @@ import andrewkassab.pokedex.PokedexTest;
 import andrewkassab.pokedex.controller.PokemonController;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Pokemon;
+import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.PokemonRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.core.Is.is;
 
 @SpringBootTest
 class PokemonIntegrationTest extends PokedexTest {
@@ -34,6 +43,11 @@ class PokemonIntegrationTest extends PokedexTest {
 
     MockMvc mockMvc;
 
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
+
     @Test
     void testDeletePokemonDoesntExist() {
         assertThrows(NotFoundException.class, () -> {
@@ -45,13 +59,10 @@ class PokemonIntegrationTest extends PokedexTest {
     @Transactional
     @Test
     void testDeletePokemon() {
-        pokemonRepository.save(getThreeStarterPokemon().get(0));
-        var pokemon = pokemonRepository.findAll().get(0);
-
-        var response = pokemonController.deletePokemonById(pokemon.getId());
+        var response = pokemonController.deletePokemonById(1);
         assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
 
-        assertTrue(pokemonRepository.findById(pokemon.getId()).isEmpty());
+        assertTrue(pokemonRepository.findById(1).isEmpty());
     }
 
     @Test
@@ -102,8 +113,7 @@ class PokemonIntegrationTest extends PokedexTest {
     @Rollback
     @Test
     void testGetPokemonById() {
-        var savedPokemon = pokemonRepository.save(getThreeStarterPokemon().get(0));
-        var pokemonReturned = pokemonController.getPokemonById(savedPokemon.getId());
+        var pokemonReturned = pokemonController.getPokemonById(1);
 
         assertNotNull(pokemonReturned);
     }
@@ -111,8 +121,26 @@ class PokemonIntegrationTest extends PokedexTest {
     @Transactional
     @Rollback
     @Test
+    void testGetPokemonByType() throws Exception {
+        var typeToFilter = Type.WATER;
+
+        var result = mockMvc.perform(get(PokemonController.POKEMON_PATH)
+                .queryParam("type", typeToFilter.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()", is(5)))
+                .andReturn();
+
+        var responseList = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Pokemon>>() {});
+        assertEquals(5, responseList.size());
+        responseList.forEach(pokemon -> assertEquals(typeToFilter, pokemon.getType()));
+    }
+
+    @Transactional
+    @Rollback
+    @Test
     void testGetPokemonEmpty() {
-        var pokemonList = pokemonController.getAllPokemons();
+        pokemonRepository.deleteAll();
+        var pokemonList = pokemonController.getAllPokemons(null);
 
         assertEquals(pokemonList.size(), 0);
     }
@@ -121,10 +149,9 @@ class PokemonIntegrationTest extends PokedexTest {
     @Rollback
     @Test
     void testGetAllPokemon() {
-        pokemonRepository.saveAll(getThreeStarterPokemon());
-        var pokemonList = pokemonController.getAllPokemons();
+        var pokemonList = pokemonController.getAllPokemons(null);
 
-        assertEquals(pokemonList.size(), 3);
+        assertEquals(pokemonList.size(), 15);
     }
 
 

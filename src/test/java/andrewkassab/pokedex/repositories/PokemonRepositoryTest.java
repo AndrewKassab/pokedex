@@ -4,15 +4,13 @@ import andrewkassab.pokedex.PokedexTest;
 import andrewkassab.pokedex.entitites.Move;
 import andrewkassab.pokedex.entitites.Pokemon;
 import andrewkassab.pokedex.models.Type;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
-import java.util.HashSet;
-import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,18 +24,11 @@ class PokemonRepositoryTest extends PokedexTest {
     @Autowired
     MoveRepository moveRepository;
 
-    List<Pokemon> pokemonList = getThreeStarterPokemon();
-
-    List<Move> moveList = getFiveMoves();
-
     @Test
     void testSavePokemon() {
-        moveRepository.saveAll(moveList);
-        Pokemon pokemonToSave = pokemonList.get(0);
-        pokemonToSave.getMoves().add(moveList.get(0));
-        pokemonToSave.getMoves().add(moveList.get(1));
-        pokemonToSave.getMoves().add(moveList.get(2));
-        pokemonToSave.getMoves().add(moveList.get(3));
+        Pokemon pokemonToSave = Pokemon.builder().name("New Pokemon").type(Type.FIRE).build();
+        pokemonToSave.getMoves().add(Move.builder().id(1).build());
+        pokemonToSave.getMoves().add(Move.builder().id(2).build());
 
         Pokemon savedPokemon = pokemonRepository.save(pokemonToSave);
 
@@ -70,9 +61,12 @@ class PokemonRepositoryTest extends PokedexTest {
 
     @Test
     void testSavePokemonTooManyMoves() {
-        moveRepository.saveAll(getFiveMoves());
-        var pokemonToSave = pokemonList.get(0);
-        pokemonToSave.setMoves(new HashSet<>(moveList));
+        var pokemonToSave = Pokemon.builder().name("New Pokemon").type(Type.FIRE).build();
+        pokemonToSave.getMoves().add(Move.builder().id(1).build());
+        pokemonToSave.getMoves().add(Move.builder().id(2).build());
+        pokemonToSave.getMoves().add(Move.builder().id(3).build());
+        pokemonToSave.getMoves().add(Move.builder().id(4).build());
+        pokemonToSave.getMoves().add(Move.builder().id(5).build());
         assertThrows(ConstraintViolationException.class, () -> {
             Pokemon savedPokemon = pokemonRepository.save(pokemonToSave);
             pokemonRepository.flush();
@@ -81,9 +75,9 @@ class PokemonRepositoryTest extends PokedexTest {
 
     @Test
     void testSavePokemonMoveDoesntExist() {
-        var pokemonToSave = pokemonList.get(0);
-        pokemonToSave.getMoves().add(moveList.get(0));
-        assertThrows(InvalidDataAccessApiUsageException.class, () -> {
+        var pokemonToSave = Pokemon.builder().name("New Pokemon").type(Type.GRASS).build();
+        pokemonToSave.getMoves().add(Move.builder().id(17).build());
+        assertThrows(DataIntegrityViolationException.class, () -> {
             Pokemon savedPokemon = pokemonRepository.save(pokemonToSave);
             pokemonRepository.flush();
         });

@@ -1,12 +1,12 @@
 package andrewkassab.pokedex.services;
 
 import andrewkassab.pokedex.entitites.Pokemon;
+import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.PokemonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +20,15 @@ public class PokemonServiceImpl implements PokemonService {
     private final PokemonRepository pokemonRepository;
 
     @Override
-    public List<Pokemon> getAllPokemon() {
+    public List<Pokemon> getAllPokemon(Type type) {
+        if (type != null) {
+            return getPokemonByType(type);
+        }
         return pokemonRepository.findAll();
+    }
+
+    private List<Pokemon> getPokemonByType(Type type) {
+        return pokemonRepository.findByType(type);
     }
 
     @Override

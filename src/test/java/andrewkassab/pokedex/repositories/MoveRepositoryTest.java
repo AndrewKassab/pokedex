@@ -20,7 +20,7 @@ class MoveRepositoryTest {
     @Test
     void testSaveMove() {
         Move savedMove = moveRepository.save(Move.builder()
-                .name("Razor Leaf")
+                .name("Lifedrain")
                 .type(Type.GRASS)
                 .build());
 
