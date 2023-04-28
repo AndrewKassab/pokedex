@@ -21,22 +21,9 @@ import static andrewkassab.pokedex.constants.PageValues.DEFAULT_PAGE_SIZE;
 @Primary
 @Service
 @RequiredArgsConstructor
-public class PokemonServiceImpl implements PokemonService {
+public class PokemonServiceImpl extends PokedexService implements PokemonService {
 
     private final PokemonRepository pokemonRepository;
-
-    public PageRequest buildPageRequest(Integer pageNumber, Integer pageSize) {
-        int queryPageNumber;
-        if (pageNumber != null && pageNumber > 0) {
-            queryPageNumber = pageNumber - 1;
-        } else {
-            queryPageNumber = DEFAULT_PAGE;
-        }
-
-        int queryPageSize = pageSize == null ? DEFAULT_PAGE_SIZE : pageSize;
-
-        return PageRequest.of(queryPageNumber, queryPageSize);
-    }
 
     public Page<Pokemon> getAllPokemon(Type type, Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = buildPageRequest(pageNumber, pageSize);

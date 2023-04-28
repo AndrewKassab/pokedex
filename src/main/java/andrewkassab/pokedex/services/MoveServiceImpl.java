@@ -1,9 +1,9 @@
 package andrewkassab.pokedex.services;
 
 import andrewkassab.pokedex.entitites.Move;
+import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.MoveRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class MoveServiceImpl implements MoveService {
     private final MoveRepository moveRepository;
 
     @Override
-    public List<Move> getAllMoves() {
+    public List<Move> getAllMoves(Type type, Integer pageNumber, Integer pageSize) {
         return moveRepository.findAll();
     }
 

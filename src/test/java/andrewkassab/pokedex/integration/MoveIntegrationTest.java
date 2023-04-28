@@ -1,6 +1,5 @@
 package andrewkassab.pokedex.integration;
 
-import andrewkassab.pokedex.PokedexTest;
 import andrewkassab.pokedex.controller.MoveController;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Move;
@@ -112,7 +111,7 @@ class MoveIntegrationTest {
     @Rollback
     @Test
     void testGetAllMove() {
-        var moveList = moveController.getAllMoves();
+        var moveList = moveController.getAllMoves(null, null, null);
 
         assertEquals(15, moveList.size());
     }

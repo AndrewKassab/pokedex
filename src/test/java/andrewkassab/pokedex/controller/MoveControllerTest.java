@@ -130,7 +130,7 @@ class MoveControllerTest extends PokedexTest {
 
     @Test
     void testGetAllMove() throws Exception {
-        given(moveService.getAllMoves()).willReturn(moveList);
+        given(moveService.getAllMoves(null, null, null)).willReturn(moveList);
 
         mockMvc.perform(get(MoveController.MOVE_PATH)
                 .accept(MediaType.APPLICATION_JSON))

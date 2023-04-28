@@ -3,6 +3,7 @@ package andrewkassab.pokedex.controller;
 import andrewkassab.pokedex.controller.exceptions.IdProvidedException;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Move;
+import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.services.MoveService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -65,8 +65,10 @@ public class MoveController {
     }
 
     @GetMapping(MOVE_PATH)
-    public List<Move> getAllMoves() {
-        return moveService.getAllMoves();
+    public List<Move> getAllMoves(@RequestParam(required = false) Type type,
+                                  @RequestParam(required = false) Integer pageNumber,
+                                  @RequestParam(required = false) Integer pageSize) {
+        return moveService.getAllMoves(null, null, null);
     }
 
     @GetMapping(MOVE_PATH_ID)

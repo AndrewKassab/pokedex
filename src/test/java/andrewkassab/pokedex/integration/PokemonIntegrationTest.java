@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
@@ -129,8 +130,8 @@ class PokemonIntegrationTest {
                 .andExpect(jsonPath("$.content.size()", is(5)))
                 .andReturn();
 
-        var responseList = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Pokemon>>() {});
-        assertEquals(5, responseList.size());
+        var responseList = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<Page<Pokemon>>() {});
+        assertEquals(5, responseList.getContent().size());
         responseList.forEach(pokemon -> assertEquals(typeToFilter, pokemon.getType()));
     }
 
