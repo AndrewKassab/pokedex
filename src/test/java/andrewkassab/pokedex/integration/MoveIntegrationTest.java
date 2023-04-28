@@ -1,10 +1,13 @@
 package andrewkassab.pokedex.integration;
 
 import andrewkassab.pokedex.controller.MoveController;
+import andrewkassab.pokedex.controller.PokemonController;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Move;
+import andrewkassab.pokedex.entitites.Pokemon;
 import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.MoveRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,10 +16,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
+
+import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 class MoveIntegrationTest {
@@ -37,6 +47,7 @@ class MoveIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
     }
 
     @Test
@@ -99,21 +110,33 @@ class MoveIntegrationTest {
         assertNotNull(returnedMove);
     }
 
-    @Transactional
-    @Rollback
     @Test
     void testGetMoveById() {
         var moveReturned = moveController.getMoveById(1);
         assertNotNull(moveReturned);
     }
 
-    @Transactional
-    @Rollback
     @Test
-    void testGetAllMove() {
+    void testGetAllMoves() {
         var moveList = moveController.getAllMoves(null, null, null);
 
-        assertEquals(15, moveList.size());
+        assertEquals(15, moveList.getContent().size());
+    }
+
+    @Test
+    void testGetMovesByType() throws Exception {
+        var typeToFilter = Type.WATER;
+
+        var result = mockMvc.perform(get(PokemonController.POKEMON_PATH)
+                        .queryParam("type", typeToFilter.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.size()", is(5)))
+                .andReturn();
+
+        // We remove "content" by using substring because of the returned page.
+        var responseList = objectMapper.readValue(result.getResponse().getContentAsString().substring(11), new TypeReference<List<Move>>() {});
+        assertEquals(5, responseList.size());
+        responseList.forEach(move -> assertEquals(typeToFilter, move.getType()));
     }
 
 }

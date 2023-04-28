@@ -5,6 +5,7 @@ import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.MoveRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,13 +16,19 @@ import java.util.concurrent.atomic.AtomicReference;
 @Primary
 @Service
 @RequiredArgsConstructor
-public class MoveServiceImpl implements MoveService {
+public class MoveServiceImpl extends PokedexService implements MoveService {
 
     private final MoveRepository moveRepository;
 
     @Override
-    public List<Move> getAllMoves(Type type, Integer pageNumber, Integer pageSize) {
-        return moveRepository.findAll();
+    public Page<Move> getAllMoves(Type type, Integer pageNumber, Integer pageSize) {
+        var pageRequest = buildPageRequest(pageNumber, pageSize);
+
+        if (type == null) {
+            return moveRepository.findAll(pageRequest);
+        }
+
+        return moveRepository.findAllByType(type, pageRequest);
     }
 
     @Override

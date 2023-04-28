@@ -109,8 +109,6 @@ class PokemonIntegrationTest {
         assertNotNull(returnedPokemon);
     }
 
-    @Transactional
-    @Rollback
     @Test
     void testGetPokemonById() {
         var pokemonReturned = pokemonController.getPokemonById(1);
@@ -118,8 +116,6 @@ class PokemonIntegrationTest {
         assertNotNull(pokemonReturned);
     }
 
-    @Transactional
-    @Rollback
     @Test
     void testGetPokemonByType() throws Exception {
         var typeToFilter = Type.WATER;
@@ -130,8 +126,9 @@ class PokemonIntegrationTest {
                 .andExpect(jsonPath("$.content.size()", is(5)))
                 .andReturn();
 
-        var responseList = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<Page<Pokemon>>() {});
-        assertEquals(5, responseList.getContent().size());
+        // We remove "content" by using substring because of the returned page.
+        var responseList = objectMapper.readValue(result.getResponse().getContentAsString().substring(11), new TypeReference<List<Pokemon>>() {});
+        assertEquals(5, responseList.size());
         responseList.forEach(pokemon -> assertEquals(typeToFilter, pokemon.getType()));
     }
 

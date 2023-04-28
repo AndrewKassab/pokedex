@@ -2,13 +2,14 @@ package andrewkassab.pokedex.services;
 
 import andrewkassab.pokedex.entitites.Move;
 import andrewkassab.pokedex.models.Type;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface MoveService {
 
-    List<Move> getAllMoves(Type type, Integer pageNumber, Integer pageSize);
+    Page<Move> getAllMoves(Type type, Integer pageNumber, Integer pageSize);
 
     Optional<Move> getMoveById(Integer id);
 

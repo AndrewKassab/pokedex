@@ -31,12 +31,10 @@ public class PokemonServiceImpl extends PokedexService implements PokemonService
         Page<Pokemon> pokemonPage;
 
         if (type != null) {
-            pokemonPage = getPokemonByType(type, pageRequest);
-        } else {
-            pokemonPage = pokemonRepository.findAll(pageRequest);
+            return getPokemonByType(type, pageRequest);
         }
 
-        return pokemonPage;
+        return pokemonRepository.findAll(pageRequest);
     }
 
     private Page<Pokemon> getPokemonByType(Type type, Pageable pageRequest) {

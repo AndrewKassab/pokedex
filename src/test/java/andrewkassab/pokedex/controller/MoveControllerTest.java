@@ -11,6 +11,7 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -130,13 +131,13 @@ class MoveControllerTest extends PokedexTest {
 
     @Test
     void testGetAllMove() throws Exception {
-        given(moveService.getAllMoves(null, null, null)).willReturn(moveList);
+        given(moveService.getAllMoves(null, null, null)).willReturn(new PageImpl<>(moveList));
 
         mockMvc.perform(get(MoveController.MOVE_PATH)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()", is(5)));
+                .andExpect(jsonPath("$.content.length()", is(5)));
     }
 
     @Test
