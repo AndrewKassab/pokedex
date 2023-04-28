@@ -144,8 +144,6 @@ class PokemonIntegrationTest {
         assertEquals(pokemonList.getContent().size(), 0);
     }
 
-    @Transactional
-    @Rollback
     @Test
     void testGetAllPokemon() {
         var pokemonList = pokemonController.getAllPokemons(null, null, null);
@@ -153,5 +151,11 @@ class PokemonIntegrationTest {
         assertEquals(15, pokemonList.getTotalElements());
     }
 
+    @Test
+    void testGetFivePokemon() {
+        var pokemonList = pokemonController.getAllPokemons(null, null, 5);
+
+        assertEquals(5, pokemonList.getContent().size());
+    }
 
 }
