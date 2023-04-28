@@ -5,12 +5,18 @@ import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.PokemonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static andrewkassab.pokedex.constants.PageValues.DEFAULT_PAGE;
+import static andrewkassab.pokedex.constants.PageValues.DEFAULT_PAGE_SIZE;
 
 @Primary
 @Service
@@ -19,16 +25,35 @@ public class PokemonServiceImpl implements PokemonService {
 
     private final PokemonRepository pokemonRepository;
 
-    @Override
-    public List<Pokemon> getAllPokemon(Type type) {
-        if (type != null) {
-            return getPokemonByType(type);
+    public PageRequest buildPageRequest(Integer pageNumber, Integer pageSize) {
+        int queryPageNumber;
+        if (pageNumber != null && pageNumber > 0) {
+            queryPageNumber = pageNumber - 1;
+        } else {
+            queryPageNumber = DEFAULT_PAGE;
         }
-        return pokemonRepository.findAll();
+
+        int queryPageSize = pageSize == null ? DEFAULT_PAGE_SIZE : pageSize;
+
+        return PageRequest.of(queryPageNumber, queryPageSize);
     }
 
-    private List<Pokemon> getPokemonByType(Type type) {
-        return pokemonRepository.findByType(type);
+    public Page<Pokemon> getAllPokemon(Type type, Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = buildPageRequest(pageNumber, pageSize);
+
+        Page<Pokemon> pokemonPage;
+
+        if (type != null) {
+            pokemonPage = getPokemonByType(type, pageRequest);
+        } else {
+            pokemonPage = pokemonRepository.findAll(pageRequest);
+        }
+
+        return pokemonPage;
+    }
+
+    private Page<Pokemon> getPokemonByType(Type type, Pageable pageRequest) {
+        return pokemonRepository.findAllByType(type, pageRequest);
     }
 
     @Override

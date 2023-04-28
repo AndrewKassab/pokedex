@@ -16,7 +16,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-class PokemonRepositoryTest extends PokedexTest {
+class PokemonRepositoryTest {
 
     @Autowired
     PokemonRepository pokemonRepository;

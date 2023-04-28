@@ -6,13 +6,12 @@ import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.services.PokemonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -55,8 +54,10 @@ public class PokemonController {
     }
 
     @GetMapping(POKEMON_PATH)
-    public List<Pokemon> getAllPokemons(@RequestParam(required = false) Type type) {
-        return pokemonService.getAllPokemon(type);
+    public Page<Pokemon> getAllPokemons(@RequestParam(required = false) Type type,
+                                        @RequestParam(required = false) Integer pageNumber,
+                                        @RequestParam(required = false) Integer pageSize) {
+        return pokemonService.getAllPokemon(type, pageNumber, pageSize);
     }
 
     @GetMapping(POKEMON_PATH_ID)

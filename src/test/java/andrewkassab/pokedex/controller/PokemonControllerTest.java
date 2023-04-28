@@ -12,6 +12,7 @@ import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -148,13 +149,13 @@ class PokemonControllerTest extends PokedexTest {
 
     @Test
     void testGetAllPokemon() throws Exception {
-        given(pokemonService.getAllPokemon(null)).willReturn(pokemonList);
+        given(pokemonService.getAllPokemon(null, null, null)).willReturn(new PageImpl<>(pokemonList));
 
         mockMvc.perform(get(PokemonController.POKEMON_PATH)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()", is(3)));
+                .andExpect(jsonPath("$.content.length()", is(3)));
     }
 
     @Test

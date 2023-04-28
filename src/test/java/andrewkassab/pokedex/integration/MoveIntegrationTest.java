@@ -20,7 +20,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class MoveIntegrationTest extends PokedexTest {
+class MoveIntegrationTest {
 
     @Autowired
     MoveController moveController;

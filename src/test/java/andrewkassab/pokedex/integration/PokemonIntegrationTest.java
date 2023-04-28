@@ -1,6 +1,5 @@
 package andrewkassab.pokedex.integration;
 
-import andrewkassab.pokedex.PokedexTest;
 import andrewkassab.pokedex.controller.PokemonController;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Pokemon;
@@ -27,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.core.Is.is;
 
 @SpringBootTest
-class PokemonIntegrationTest extends PokedexTest {
+class PokemonIntegrationTest {
 
     @Autowired
     PokemonController pokemonController;
@@ -76,7 +75,7 @@ class PokemonIntegrationTest extends PokedexTest {
     @Rollback
     @Test
     void testUpdatePokemon() {
-        var pokemon = pokemonRepository.save(getThreeStarterPokemon().get(0));
+        var pokemon = pokemonRepository.getReferenceById(1);
 
         var newName = "New Pokemon";
         pokemon.setName(newName);
@@ -94,7 +93,7 @@ class PokemonIntegrationTest extends PokedexTest {
     @Rollback
     @Test
     void testCreatePokemon() {
-        Pokemon newPokemon = getThreeStarterPokemon().get(0);
+        Pokemon newPokemon = Pokemon.builder().name("Pokemon 16").type(Type.FIRE).build();
 
         var response = pokemonController.createPokemon(newPokemon);
 
@@ -127,7 +126,7 @@ class PokemonIntegrationTest extends PokedexTest {
         var result = mockMvc.perform(get(PokemonController.POKEMON_PATH)
                 .queryParam("type", typeToFilter.toString()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", is(5)))
+                .andExpect(jsonPath("$.content.size()", is(5)))
                 .andReturn();
 
         var responseList = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<List<Pokemon>>() {});
@@ -140,18 +139,18 @@ class PokemonIntegrationTest extends PokedexTest {
     @Test
     void testGetPokemonEmpty() {
         pokemonRepository.deleteAll();
-        var pokemonList = pokemonController.getAllPokemons(null);
+        var pokemonList = pokemonController.getAllPokemons(null, null, null);
 
-        assertEquals(pokemonList.size(), 0);
+        assertEquals(pokemonList.getContent().size(), 0);
     }
 
     @Transactional
     @Rollback
     @Test
     void testGetAllPokemon() {
-        var pokemonList = pokemonController.getAllPokemons(null);
+        var pokemonList = pokemonController.getAllPokemons(null, null, null);
 
-        assertEquals(pokemonList.size(), 15);
+        assertEquals(15, pokemonList.getTotalElements());
     }
 
 
