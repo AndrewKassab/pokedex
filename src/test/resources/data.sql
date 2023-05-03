@@ -15,24 +15,19 @@ INSERT INTO move (name, type) VALUES
   ('Move 14', 'WATER'),
   ('Move 15', 'GRASS');
 
-INSERT INTO pokemon (name, type) VALUES
-  ('Charmander', 'FIRE'),
-  ('Squirtle', 'WATER'),
-  ('Bulbasaur', 'GRASS'),
-  ('Pokemon 4', 'FIRE'),
-  ('Pokemon 5', 'WATER'),
-  ('Pokemon 6', 'GRASS'),
-  ('Pokemon 7', 'FIRE'),
-  ('Pokemon 8', 'WATER'),
-  ('Pokemon 9', 'GRASS'),
-  ('Pokemon 10', 'FIRE'),
-  ('Pokemon 11', 'WATER'),
-  ('Pokemon 12', 'GRASS'),
-  ('Pokemon 13', 'FIRE'),
-  ('Pokemon 14', 'WATER'),
-  ('Pokemon 15', 'GRASS');
-
-INSERT INTO pokemon_moves (pokemon_id, moves_id) VALUES
-  ((SELECT id FROM pokemon WHERE name = 'Charmander'), (SELECT id FROM move WHERE name = 'Flamethrower')),
-  ((SELECT id FROM pokemon WHERE name = 'Squirtle'), (SELECT id FROM move WHERE name = 'Water Gun')),
-  ((SELECT id FROM pokemon WHERE name = 'Bulbasaur'), (SELECT id FROM move WHERE name = 'Razor Leaf'));
+INSERT INTO pokemon (id, name, primary_type, secondary_type) VALUES
+  (1, 'Bulbasaur', 'GRASS', NULL),
+  (2, 'Ivysaur', 'GRASS', NULL),
+  (3, 'Venusaur', 'GRASS', NULL),
+  (4, 'Charmander', 'FIRE', NULL),
+  (5, 'Charmeleon', 'FIRE', NULL),
+  (6, 'Charizard', 'FIRE', NULL),
+  (7, 'Squirtle', 'WATER', NULL),
+  (8, 'Wartortle', 'WATER', NULL),
+  (9, 'Blastoise', 'WATER', NULL),
+  (10, 'Caterpie', 'BUG', NULL),
+  (11, 'Metapod', 'BUG', NULL),
+  (12, 'Butterfree', 'BUG', 'FLYING'),
+  (13, 'Weedle', 'BUG', 'POISON'),
+  (14, 'Kakuna', 'BUG', 'POISON'),
+  (15, 'Beedrill', 'BUG', 'POISON');

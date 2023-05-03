@@ -3,7 +3,25 @@ package andrewkassab.pokedex.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum Type {
-    FIRE, WATER, GRASS;
+
+    NORMAL,
+    FIRE,
+    WATER,
+    ELECTRIC,
+    GRASS,
+    ICE,
+    FIGHTING,
+    POISON,
+    GROUND,
+    FLYING,
+    PSYCHIC,
+    BUG,
+    ROCK,
+    GHOST,
+    DRAGON,
+    DARK,
+    STEEL,
+    FAIRY;
 
     @JsonCreator
     public static Type fromValue(String value) {

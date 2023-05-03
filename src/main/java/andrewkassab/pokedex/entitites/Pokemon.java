@@ -32,14 +32,12 @@ public class Pokemon {
     @Column(length=50)
     private String name;
 
-    @Size(max=4)
-    @ManyToMany
-    @Builder.Default
-    private Set<Move> moves = new HashSet<>();
-
     @Enumerated(EnumType.STRING)
     @NotNull
-    private Type type;
+    private Type primaryType;
+
+    @Enumerated(EnumType.STRING)
+    private Type secondaryType;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdDate;
