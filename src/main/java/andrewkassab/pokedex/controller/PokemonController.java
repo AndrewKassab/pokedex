@@ -45,6 +45,10 @@ public class PokemonController {
     @PostMapping(POKEMON_PATH)
     public ResponseEntity createPokemon(@Validated @RequestBody Pokemon pokemon) {
 
+        if (pokemonService.getPokemonById(pokemon.getId()).isPresent()) {
+            return ResponseEntity.badRequest().body("Pokemon with ID already exists");
+        }
+
         var savedPokemon = pokemonService.saveNewPokemon(pokemon);
 
         var headers = new HttpHeaders();

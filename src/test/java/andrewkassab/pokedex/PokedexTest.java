@@ -13,16 +13,19 @@ public abstract class PokedexTest {
     protected List<Pokemon> getThreeStarterPokemon() {
 
         Pokemon bulbasaur = Pokemon.builder()
+                .id(1)
                 .name("Bulbasaur")
                 .primaryType(Type.GRASS)
                 .build();
 
         Pokemon charmander = Pokemon.builder()
+                .id(4)
                 .name("Charmander")
                 .primaryType(Type.FIRE)
                 .build();
 
         Pokemon squirtle = Pokemon.builder()
+                .id(7)
                 .name("Squirtle")
                 .primaryType(Type.WATER)
                 .build();

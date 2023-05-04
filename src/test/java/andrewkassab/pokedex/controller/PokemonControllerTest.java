@@ -133,7 +133,7 @@ class PokemonControllerTest extends PokedexTest {
     void testCreatePokemonInvalidType() throws Exception {
         var testPokemon = pokemonList.get(0);
         Map<String, Object> valueAsMap = objectMapper.convertValue(testPokemon, new TypeReference<Map<String, Object>>() {});
-        valueAsMap.put("type", "faketype");
+        valueAsMap.put("primaryType", "faketype");
 
         var result = mockMvc.perform(post(PokemonController.POKEMON_PATH)
                 .accept(MediaType.APPLICATION_JSON)
