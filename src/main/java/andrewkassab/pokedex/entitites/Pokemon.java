@@ -22,8 +22,8 @@ import java.util.Set;
 public class Pokemon {
 
     @Id
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
+    @Column(unique = true)
     private Integer id;
 
     @NotNull

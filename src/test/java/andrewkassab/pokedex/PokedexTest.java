@@ -14,17 +14,17 @@ public abstract class PokedexTest {
 
         Pokemon bulbasaur = Pokemon.builder()
                 .name("Bulbasaur")
-                .type(Type.GRASS)
+                .primaryType(Type.GRASS)
                 .build();
 
         Pokemon charmander = Pokemon.builder()
                 .name("Charmander")
-                .type(Type.FIRE)
+                .primaryType(Type.FIRE)
                 .build();
 
         Pokemon squirtle = Pokemon.builder()
                 .name("Squirtle")
-                .type(Type.WATER)
+                .primaryType(Type.WATER)
                 .build();
 
         List<Pokemon> pokemonList = new ArrayList<>();

@@ -61,9 +61,8 @@ public class PokemonServiceImpl extends PokedexService implements PokemonService
         var atomicReference = new AtomicReference<Optional<Pokemon>>();
 
         pokemonRepository.findById(id).ifPresentOrElse(foundPokemon -> {
-            foundPokemon.setType(pokemon.getType());
+            foundPokemon.setPrimaryType(pokemon.getPrimaryType());
             foundPokemon.setName(pokemon.getName());
-            foundPokemon.setMoves(pokemon.getMoves());
             foundPokemon.setUpdatedDate(LocalDateTime.now());
             atomicReference.set(Optional.of(pokemonRepository.save(foundPokemon)));
         }, () -> {

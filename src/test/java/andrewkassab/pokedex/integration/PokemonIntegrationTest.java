@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
@@ -94,7 +93,7 @@ class PokemonIntegrationTest {
     @Rollback
     @Test
     void testCreatePokemon() {
-        Pokemon newPokemon = Pokemon.builder().name("Pokemon 16").type(Type.FIRE).build();
+        Pokemon newPokemon = Pokemon.builder().name("Pokemon 16").primaryType(Type.FIRE).build();
 
         var response = pokemonController.createPokemon(newPokemon);
 
@@ -129,7 +128,7 @@ class PokemonIntegrationTest {
         // We remove "content" by using substring because of the returned page.
         var responseList = objectMapper.readValue(result.getResponse().getContentAsString().substring(11), new TypeReference<List<Pokemon>>() {});
         assertEquals(5, responseList.size());
-        responseList.forEach(pokemon -> assertEquals(typeToFilter, pokemon.getType()));
+        responseList.forEach(pokemon -> assertEquals(typeToFilter, pokemon.getPrimaryType()));
     }
 
     @Transactional
