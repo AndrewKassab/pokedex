@@ -12,6 +12,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -39,10 +40,23 @@ public class Pokemon {
     @Enumerated(EnumType.STRING)
     private Type secondaryType;
 
+    @OneToMany(mappedBy = "pokemon")
+    @Builder.Default
+    private Set<TypeWeakness> typeWeaknesses = new HashSet<>();
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdDate;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime updatedDate;
+
+    public boolean isWeakToType(Type type) {
+        var weaknesses = typeWeaknesses.stream().map(TypeWeakness::getType)
+                .toList();
+        if (weaknesses.contains(type)) {
+            return true;
+        }
+        return false;
+    }
 
 }

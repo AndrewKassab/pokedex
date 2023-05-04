@@ -3,6 +3,7 @@ package andrewkassab.pokedex.services;
 import andrewkassab.pokedex.entitites.Pokemon;
 import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.PokemonRepository;
+import andrewkassab.pokedex.repositories.TypeWeaknessRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,8 @@ import static andrewkassab.pokedex.constants.PageValues.DEFAULT_PAGE_SIZE;
 public class PokemonServiceImpl extends PokedexService implements PokemonService {
 
     private final PokemonRepository pokemonRepository;
+
+    private final TypeWeaknessRepository typeWeaknessRepository;
 
     public Page<Pokemon> getAllPokemon(Type type, Integer pageNumber, Integer pageSize) {
         PageRequest pageRequest = buildPageRequest(pageNumber, pageSize);
