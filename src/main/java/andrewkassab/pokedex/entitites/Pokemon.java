@@ -53,10 +53,7 @@ public class Pokemon {
     public boolean isWeakToType(Type type) {
         var weaknesses = typeWeaknesses.stream().map(TypeWeakness::getType)
                 .toList();
-        if (weaknesses.contains(type)) {
-            return true;
-        }
-        return false;
+        return weaknesses.contains(type);
     }
 
 }
