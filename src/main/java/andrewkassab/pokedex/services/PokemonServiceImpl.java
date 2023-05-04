@@ -35,7 +35,7 @@ public class PokemonServiceImpl extends PokedexService implements PokemonService
             return getPokemonByType(type, pageRequest);
         }
 
-        Sort sort = Sort.by(Sort.Order.asc("name"));
+        Sort sort = Sort.by(Sort.Order.asc("id"));
 
         return pokemonRepository.findAll(pageRequest);
     }
