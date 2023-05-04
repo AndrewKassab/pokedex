@@ -40,9 +40,10 @@ public class Pokemon {
     @Enumerated(EnumType.STRING)
     private Type secondaryType;
 
-    @OneToMany(mappedBy = "pokemon")
+    @ElementCollection(targetClass = Type.class)
+    @Enumerated(EnumType.STRING)
     @Builder.Default
-    private Set<TypeWeakness> typeWeaknesses = new HashSet<>();
+    private Set<Type> typeWeaknesses = new HashSet<>();
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdDate;
@@ -51,9 +52,7 @@ public class Pokemon {
     private LocalDateTime updatedDate;
 
     public boolean isWeakToType(Type type) {
-        var weaknesses = typeWeaknesses.stream().map(TypeWeakness::getType)
-                .toList();
-        return weaknesses.contains(type);
+        return typeWeaknesses.contains(type);
     }
 
 }
