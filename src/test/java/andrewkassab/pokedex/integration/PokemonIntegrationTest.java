@@ -93,7 +93,7 @@ class PokemonIntegrationTest {
     @Rollback
     @Test
     void testCreatePokemon() {
-        Pokemon newPokemon = Pokemon.builder().name("Pokemon 16").primaryType(Type.FIRE).build();
+        Pokemon newPokemon = Pokemon.builder().id(16).name("Pokemon 16").primaryType(Type.FIRE).build();
 
         var response = pokemonController.createPokemon(newPokemon);
 
@@ -122,13 +122,29 @@ class PokemonIntegrationTest {
         var result = mockMvc.perform(get(PokemonController.POKEMON_PATH)
                 .queryParam("type", typeToFilter.toString()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.size()", is(5)))
+                .andExpect(jsonPath("$.content.size()", is(3)))
                 .andReturn();
 
         // We remove "content" by using substring because of the returned page.
         var responseList = objectMapper.readValue(result.getResponse().getContentAsString().substring(11), new TypeReference<List<Pokemon>>() {});
-        assertEquals(5, responseList.size());
+        assertEquals(3, responseList.size());
         responseList.forEach(pokemon -> assertEquals(typeToFilter, pokemon.getPrimaryType()));
+    }
+
+    @Test
+    void testGetPokemonBySecondaryType() throws Exception {
+        var typeToFilter = Type.POISON;
+
+        var result = mockMvc.perform(get(PokemonController.POKEMON_PATH)
+                        .queryParam("type", typeToFilter.toString()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.size()", is(3)))
+                .andReturn();
+
+        // We remove "content" by using substring because of the returned page.
+        var responseList = objectMapper.readValue(result.getResponse().getContentAsString().substring(11), new TypeReference<List<Pokemon>>() {});
+        assertEquals(3, responseList.size());
+        responseList.forEach(pokemon -> assertEquals(typeToFilter, pokemon.getSecondaryType()));
     }
 
     @Transactional

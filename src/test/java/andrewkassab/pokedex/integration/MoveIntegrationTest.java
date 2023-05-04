@@ -1,10 +1,8 @@
 package andrewkassab.pokedex.integration;
 
 import andrewkassab.pokedex.controller.MoveController;
-import andrewkassab.pokedex.controller.PokemonController;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Move;
-import andrewkassab.pokedex.entitites.Pokemon;
 import andrewkassab.pokedex.models.Type;
 import andrewkassab.pokedex.repositories.MoveRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -127,7 +125,7 @@ class MoveIntegrationTest {
     void testGetMovesByType() throws Exception {
         var typeToFilter = Type.WATER;
 
-        var result = mockMvc.perform(get(PokemonController.POKEMON_PATH)
+        var result = mockMvc.perform(get(MoveController.MOVE_PATH)
                         .queryParam("type", typeToFilter.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.size()", is(5)))
