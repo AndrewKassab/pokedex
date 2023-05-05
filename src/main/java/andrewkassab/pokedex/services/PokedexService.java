@@ -16,7 +16,7 @@ public abstract class PokedexService {
             queryPageNumber = DEFAULT_PAGE;
         }
 
-        Sort sort = Sort.by(Sort.Order.asc("name"));
+        Sort sort = Sort.by(Sort.Order.asc("id"));
 
         int queryPageSize = pageSize == null ? DEFAULT_PAGE_SIZE : pageSize;
 

@@ -31,3 +31,20 @@ INSERT INTO pokemon (id, name, primary_type, secondary_type) VALUES
   (13, 'Weedle', 'BUG', 'POISON'),
   (14, 'Kakuna', 'BUG', 'POISON'),
   (15, 'Beedrill', 'BUG', 'POISON');
+
+INSERT INTO pokemon_type_weaknesses (pokemon_id, type_weaknesses)
+VALUES (1, 'FIRE'), (1, 'PSYCHIC'), (1, 'FLYING'), (1,'ICE'),
+(2, 'FIRE'), (2, 'PSYCHIC'), (2, 'FLYING'), (2,'ICE'),
+(3, 'FIRE'), (3, 'PSYCHIC'), (3, 'FLYING'), (3,'ICE'),
+(4, 'WATER'), (4, 'GROUND'), (4, 'ROCK'),
+(5, 'WATER'), (5, 'GROUND'), (5, 'ROCK'),
+(6, 'WATER'), (6, 'ELECTRIC'), (6, 'ROCK'),
+(7, 'GRASS'), (7, 'ELECTRIC'),
+(8, 'GRASS'), (8, 'ELECTRIC'),
+(9, 'GRASS'), (9, 'ELECTRIC'),
+(10, 'FIRE'), (10, 'FLYING'), (10, 'ROCK'),
+(11, 'FIRE'), (11, 'FLYING'), (11, 'ROCK'),
+(12, 'FIRE'), (12, 'FLYING'), (12, 'ROCK'), (12, 'ELECTRIC'), (12, 'ICE'),
+(13, 'FIRE'), (13, 'PSYCHIC'), (13, 'FLYING'), (13, 'ROCK'),
+(14, 'FIRE'), (14, 'PSYCHIC'), (14, 'FLYING'), (14, 'ROCK'),
+(15, 'FIRE'), (15, 'PSYCHIC'), (15, 'FLYING'), (15, 'ROCK');

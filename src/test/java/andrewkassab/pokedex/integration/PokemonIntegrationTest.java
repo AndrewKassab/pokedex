@@ -94,6 +94,7 @@ class PokemonIntegrationTest {
     @Test
     void testCreatePokemon() {
         Pokemon newPokemon = Pokemon.builder().id(16).name("Pokemon 16").primaryType(Type.FIRE).build();
+        newPokemon.getTypeWeaknesses().add(Type.WATER);
 
         var response = pokemonController.createPokemon(newPokemon);
 
