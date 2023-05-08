@@ -1,6 +1,6 @@
 package andrewkassab.pokedex.integration;
 
-import andrewkassab.pokedex.controller.MoveController;
+import andrewkassab.pokedex.controller.MoveRestController;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Move;
 import andrewkassab.pokedex.models.Type;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class MoveIntegrationTest {
 
     @Autowired
-    MoveController moveController;
+    MoveRestController moveController;
 
     @Autowired
     MoveRepository moveRepository;
@@ -125,7 +125,7 @@ class MoveIntegrationTest {
     void testGetMovesByType() throws Exception {
         var typeToFilter = Type.WATER;
 
-        var result = mockMvc.perform(get(MoveController.MOVE_PATH)
+        var result = mockMvc.perform(get(MoveRestController.MOVE_PATH)
                         .queryParam("type", typeToFilter.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.size()", is(5)))

@@ -1,6 +1,6 @@
 package andrewkassab.pokedex.integration;
 
-import andrewkassab.pokedex.controller.PokemonController;
+import andrewkassab.pokedex.controller.PokemonRestController;
 import andrewkassab.pokedex.controller.exceptions.NotFoundException;
 import andrewkassab.pokedex.entitites.Pokemon;
 import andrewkassab.pokedex.models.Type;
@@ -29,7 +29,7 @@ import static org.hamcrest.core.Is.is;
 class PokemonIntegrationTest {
 
     @Autowired
-    PokemonController pokemonController;
+    PokemonRestController pokemonController;
 
     @Autowired
     PokemonRepository pokemonRepository;
@@ -120,7 +120,7 @@ class PokemonIntegrationTest {
     void testGetPokemonByType() throws Exception {
         var typeToFilter = Type.WATER;
 
-        var result = mockMvc.perform(get(PokemonController.POKEMON_PATH)
+        var result = mockMvc.perform(get(PokemonRestController.POKEMON_API_PATH)
                 .queryParam("type", typeToFilter.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.size()", is(3)))
@@ -136,7 +136,7 @@ class PokemonIntegrationTest {
     void testGetPokemonBySecondaryType() throws Exception {
         var typeToFilter = Type.POISON;
 
-        var result = mockMvc.perform(get(PokemonController.POKEMON_PATH)
+        var result = mockMvc.perform(get(PokemonRestController.POKEMON_API_PATH)
                         .queryParam("type", typeToFilter.toString()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.size()", is(3)))
@@ -167,7 +167,7 @@ class PokemonIntegrationTest {
 
     @Test
     void testGetFivePokemon() throws Exception {
-        var result = mockMvc.perform(get(PokemonController.POKEMON_PATH)
+        var result = mockMvc.perform(get(PokemonRestController.POKEMON_API_PATH)
                         .queryParam("pageSize", "5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.size()", is(5)))

@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(MoveController.class)
+@WebMvcTest(MoveRestController.class)
 class MoveControllerTest extends PokedexTest {
 
     @MockBean
@@ -53,7 +53,7 @@ class MoveControllerTest extends PokedexTest {
         testMove.setId(1);
         given(moveService.deleteMoveById(any())).willReturn(true);
 
-        mockMvc.perform(delete(MoveController.MOVE_PATH_ID, testMove.getId())
+        mockMvc.perform(delete(MoveRestController.MOVE_PATH_ID, testMove.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
@@ -69,7 +69,7 @@ class MoveControllerTest extends PokedexTest {
         testMove.setName("New Name");
         given(moveService.updateMoveById(any(), any())).willReturn(Optional.of(testMove));
 
-        mockMvc.perform(put(MoveController.MOVE_PATH_ID, testMove.getId())
+        mockMvc.perform(put(MoveRestController.MOVE_PATH_ID, testMove.getId())
                 .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testMove)))
@@ -89,7 +89,7 @@ class MoveControllerTest extends PokedexTest {
         Map<String, Object> valueAsMap = objectMapper.convertValue(testMove, new TypeReference<Map<String, Object>>() {});
         valueAsMap.put("id", null);
 
-        mockMvc.perform(post(MoveController.MOVE_PATH)
+        mockMvc.perform(post(MoveRestController.MOVE_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(valueAsMap)))
@@ -104,7 +104,7 @@ class MoveControllerTest extends PokedexTest {
         testMove.setId(2);
         given(moveService.saveNewMove(any(Move.class))).willReturn(moveList.get(0));
 
-        mockMvc.perform(post(MoveController.MOVE_PATH)
+        mockMvc.perform(post(MoveRestController.MOVE_PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testMove)))
@@ -117,7 +117,7 @@ class MoveControllerTest extends PokedexTest {
         Map<String, Object> valueAsMap = objectMapper.convertValue(testMove, new TypeReference<Map<String, Object>>() {});
         valueAsMap.put("type", "faketype");
 
-        var result = mockMvc.perform(post(MoveController.MOVE_PATH)
+        var result = mockMvc.perform(post(MoveRestController.MOVE_PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(valueAsMap)))
@@ -133,7 +133,7 @@ class MoveControllerTest extends PokedexTest {
     void testGetAllMove() throws Exception {
         given(moveService.getAllMoves(null, null, null)).willReturn(new PageImpl<>(moveList));
 
-        mockMvc.perform(get(MoveController.MOVE_PATH)
+        mockMvc.perform(get(MoveRestController.MOVE_PATH)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -146,7 +146,7 @@ class MoveControllerTest extends PokedexTest {
         testMove.setId(1);
         given(moveService.getMoveById(testMove.getId())).willReturn(Optional.of(testMove));
 
-        mockMvc.perform(get(MoveController.MOVE_PATH_ID, testMove.getId())
+        mockMvc.perform(get(MoveRestController.MOVE_PATH_ID, testMove.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -158,7 +158,7 @@ class MoveControllerTest extends PokedexTest {
     void testGetMoveByIdNotFound() throws Exception {
         given(moveService.getMoveById(any(Integer.class))).willReturn(Optional.empty());
 
-        mockMvc.perform(get(MoveController.MOVE_PATH_ID, 1))
+        mockMvc.perform(get(MoveRestController.MOVE_PATH_ID, 1))
                 .andExpect(status().isNotFound());
     }
 

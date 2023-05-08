@@ -14,12 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-public class MoveController {
+public class MoveRestController {
 
     public static final String MOVE_PATH = "/api/move";
     public static final String MOVE_PATH_ID = MOVE_PATH + "/{moveId}";
@@ -37,17 +35,17 @@ public class MoveController {
     }
 
     @DeleteMapping(MOVE_PATH_ID)
-    public ResponseEntity deleteMoveById(@PathVariable("moveId") Integer moveId) {
+    public ResponseEntity<Void> deleteMoveById(@PathVariable("moveId") Integer moveId) {
 
         if (!moveService.deleteMoveById(moveId)) {
             throw new NotFoundException();
         }
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping(MOVE_PATH)
-    public ResponseEntity createMove(@Validated @RequestBody Move move) {
+    public ResponseEntity<String> createMove(@Validated @RequestBody Move move) {
 
         if (move.getId() != null) {
             throw new IdProvidedException("id should not be provided");
@@ -62,7 +60,7 @@ public class MoveController {
         var headers = new HttpHeaders();
         headers.add("Location", MOVE_PATH + "/" + savedMove.getId().toString());
 
-        return new ResponseEntity(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @GetMapping(MOVE_PATH)

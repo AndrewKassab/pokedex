@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(PokemonController.class)
+@WebMvcTest(PokemonRestController.class)
 class PokemonControllerTest extends PokedexTest {
 
     @Autowired
@@ -55,7 +55,7 @@ class PokemonControllerTest extends PokedexTest {
         testPokemon.setId(1);
         given(pokemonService.deletePokemonById(any())).willReturn(true);
 
-        mockMvc.perform(delete(PokemonController.POKEMON_PATH_ID, testPokemon.getId())
+        mockMvc.perform(delete(PokemonRestController.POKEMON_API_PATH_ID, testPokemon.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
@@ -71,7 +71,7 @@ class PokemonControllerTest extends PokedexTest {
         testPokemon.setId(1);
         given(pokemonService.updatePokemonById(any(), any())).willReturn(Optional.of(testPokemon));
 
-        mockMvc.perform(put(PokemonController.POKEMON_PATH_ID, testPokemon.getId())
+        mockMvc.perform(put(PokemonRestController.POKEMON_API_PATH_ID, testPokemon.getId())
                 .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testPokemon)))
@@ -88,7 +88,7 @@ class PokemonControllerTest extends PokedexTest {
         var testPokemon = pokemonList.get(0);
         given(pokemonService.saveNewPokemon(any(Pokemon.class))).willReturn(pokemonList.get(0));
 
-        mockMvc.perform(post(PokemonController.POKEMON_PATH)
+        mockMvc.perform(post(PokemonRestController.POKEMON_API_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(testPokemon)))
@@ -103,7 +103,7 @@ class PokemonControllerTest extends PokedexTest {
         testPokemon.setId(2);
         given(pokemonService.saveNewPokemon(any(Pokemon.class))).willReturn(pokemonList.get(0));
 
-        mockMvc.perform(post(PokemonController.POKEMON_PATH)
+        mockMvc.perform(post(PokemonRestController.POKEMON_API_PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testPokemon)))
@@ -117,7 +117,7 @@ class PokemonControllerTest extends PokedexTest {
         EntityNotFoundException exception = new EntityNotFoundException(errorMessage);
         given(pokemonService.saveNewPokemon(any(Pokemon.class))).willThrow(exception);
 
-        var result = mockMvc.perform(post(PokemonController.POKEMON_PATH)
+        var result = mockMvc.perform(post(PokemonRestController.POKEMON_API_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testPokemon)))
@@ -135,7 +135,7 @@ class PokemonControllerTest extends PokedexTest {
         Map<String, Object> valueAsMap = objectMapper.convertValue(testPokemon, new TypeReference<Map<String, Object>>() {});
         valueAsMap.put("primaryType", "faketype");
 
-        var result = mockMvc.perform(post(PokemonController.POKEMON_PATH)
+        var result = mockMvc.perform(post(PokemonRestController.POKEMON_API_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(valueAsMap)))
@@ -151,7 +151,7 @@ class PokemonControllerTest extends PokedexTest {
     void testGetAllPokemon() throws Exception {
         given(pokemonService.getAllPokemon(null, null, null)).willReturn(new PageImpl<>(pokemonList));
 
-        mockMvc.perform(get(PokemonController.POKEMON_PATH)
+        mockMvc.perform(get(PokemonRestController.POKEMON_API_PATH)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -164,7 +164,7 @@ class PokemonControllerTest extends PokedexTest {
         testPokemon.setId(1);
         given(pokemonService.getPokemonById(testPokemon.getId())).willReturn(Optional.of(testPokemon));
 
-        mockMvc.perform(get(PokemonController.POKEMON_PATH_ID, testPokemon.getId())
+        mockMvc.perform(get(PokemonRestController.POKEMON_API_PATH_ID, testPokemon.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -176,7 +176,7 @@ class PokemonControllerTest extends PokedexTest {
     void testGetPokemonByIdNotFound() throws Exception {
         given(pokemonService.getPokemonById(any(Integer.class))).willReturn(Optional.empty());
 
-        mockMvc.perform(get(PokemonController.POKEMON_PATH_ID, 1))
+        mockMvc.perform(get(PokemonRestController.POKEMON_API_PATH_ID, 1))
                 .andExpect(status().isNotFound());
     }
 
