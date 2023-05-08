@@ -1,0 +1,10 @@
+.type-oval {
+    display: inline-block;
+    height: 30px;
+    width: 70px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 30px;
+    margin-right: 8px;
+}

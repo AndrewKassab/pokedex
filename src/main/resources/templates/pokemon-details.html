@@ -1,33 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>Pokemon Details</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
 </head>
 <body>
-<h1>Pokemon Details</h1>
-<table>
-    <tr>
-        <th>ID</th>
-        <td th:text="${pokemon.id}"></td>
-    </tr>
-    <tr>
-        <th>Name</th>
-        <td th:text="${pokemon.name}"></td>
-    </tr>
-    <tr>
-        <th>Type</th>
-        <td th:text="${pokemon.primaryType}"></td>
-    </tr>
-    <tr>
-        <th>Secondary Type</th>
-        <td th:if="${pokemon.secondaryType != null}" th:text="${pokemon.secondaryType}"></td>
-        <td th:if="${pokemon.secondaryType == null}">None</td>
-    </tr>
-</table>
-<br/>
-<div>
-    <a th:href="@{'/pokemon/' + ${pokemon.id+1}}" th:text="'Next Pokemon ID: ' + ${pokemon.id+1}">Next Pokemon</a>
-</div>
+<h1>[[${pokemon.name}]] #[[${pokemon.id}]]</h1>
+<img class="active" th:src="${imgSourceUrl} + ${#numbers.formatInteger(pokemon.id,3)} + '.png'" alt="[[${pokemon.name}]]">
+
+<h3>Type</h3>
+<p>
+    <span class="type-oval" th:style="'background-color: ' + ${pokemon.primaryType.color}" th:text="${pokemon.primaryType}"></span>
+    <span th:if="${pokemon.secondaryType != null}" class="type-oval" th:style="'background-color: ' + ${pokemon.secondaryType.color}" th:text="${pokemon.secondaryType}"></span>
+</p>
+<h3>Weaknesses</h3>
+<p>
+    <span th:each="type : ${pokemon.typeWeaknesses}" class="type-oval" th:style="'background-color: ' + ${type.color}" th:text="${type}"></span>
+</p>
+<p>
+    <a th:href="'/pokemon/' + ${pokemon.id+1}">Next Pokemon</a>
+</p>
 </body>
 </html>
