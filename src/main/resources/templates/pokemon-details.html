@@ -4,22 +4,29 @@
     <meta charset="UTF-8"/>
     <title>Pokemon Details</title>
     <link rel="stylesheet" type="text/css" href="/styles.css">
+    <style>
+        .container {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h1>[[${pokemon.name}]] #[[${pokemon.id}]]</h1>
-<img class="active" th:src="${imgSourceUrl} + ${#numbers.formatInteger(pokemon.id,3)} + '.png'" alt="[[${pokemon.name}]]">
+<div class="container">
+    <h1>[[${pokemon.name}]] #[[${pokemon.id}]]</h1>
+    <img class="active" th:src="${imgSourceUrl} + ${#numbers.formatInteger(pokemon.id,3)} + '.png'" alt="[[${pokemon.name}]]">
 
-<h3>Type</h3>
-<p>
-    <span class="type-oval" th:style="'background-color: ' + ${pokemon.primaryType.color}" th:text="${pokemon.primaryType}"></span>
-    <span th:if="${pokemon.secondaryType != null}" class="type-oval" th:style="'background-color: ' + ${pokemon.secondaryType.color}" th:text="${pokemon.secondaryType}"></span>
-</p>
-<h3>Weaknesses</h3>
-<p>
-    <span th:each="type : ${pokemon.typeWeaknesses}" class="type-oval" th:style="'background-color: ' + ${type.color}" th:text="${type}"></span>
-</p>
-<p>
-    <a th:href="'/pokemon/' + ${pokemon.id+1}">Next Pokemon</a>
-</p>
+    <h3>Type</h3>
+    <p>
+        <span class="type-oval" th:style="'background-color: ' + ${pokemon.primaryType.color}" th:text="${pokemon.primaryType}"></span>
+        <span th:if="${pokemon.secondaryType != null}" class="type-oval" th:style="'background-color: ' + ${pokemon.secondaryType.color}" th:text="${pokemon.secondaryType}"></span>
+    </p>
+    <h3>Weaknesses</h3>
+    <p>
+        <span th:each="type : ${pokemon.typeWeaknesses}" class="type-oval" th:style="'background-color: ' + ${type.color}" th:text="${type}"></span>
+    </p>
+    <p>
+        <a th:href="'/pokemon/' + ${pokemon.id+1}">Next Pokemon</a>
+    </p>
+</div>
 </body>
 </html>

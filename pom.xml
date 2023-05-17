@@ -54,6 +54,10 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>LATEST</version>
 		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+		</dependency>
     </dependencies>
 
 	<build>

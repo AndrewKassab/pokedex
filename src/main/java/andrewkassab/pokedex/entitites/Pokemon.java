@@ -12,7 +12,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -43,6 +42,7 @@ public class Pokemon {
     @ElementCollection(targetClass = Type.class)
     @Enumerated(EnumType.STRING)
     @Builder.Default
+    @Column(name = "type")
     private Set<Type> typeWeaknesses = new HashSet<>();
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
