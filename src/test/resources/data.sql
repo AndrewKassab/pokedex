@@ -32,7 +32,7 @@ INSERT INTO pokemon (id, name, primary_type, secondary_type) VALUES
   (14, 'Kakuna', 'BUG', 'POISON'),
   (15, 'Beedrill', 'BUG', 'POISON');
 
-INSERT INTO pokemon_type_weaknesses (pokemon_id, type_weaknesses)
+INSERT INTO pokemon_type_weaknesses (pokemon_id, type)
 VALUES (1, 'FIRE'), (1, 'PSYCHIC'), (1, 'FLYING'), (1,'ICE'),
 (2, 'FIRE'), (2, 'PSYCHIC'), (2, 'FLYING'), (2,'ICE'),
 (3, 'FIRE'), (3, 'PSYCHIC'), (3, 'FLYING'), (3,'ICE'),
